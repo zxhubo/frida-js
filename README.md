@@ -3,3 +3,4 @@
 ## 参考
 
 - [https://github.com/iddoeldor/frida-snippets](https://github.com/iddoeldor/frida-snippets)
+- [https://github.com/0xdea/frida-scripts](https://github.com/0xdea/frida-scripts)
