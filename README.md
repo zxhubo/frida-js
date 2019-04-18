@@ -1,4 +1,4 @@
-# frida的一些有用的hook脚本
+# frida的一些有用的hook脚本和文档
 
 ## 参考
 
