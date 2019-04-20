@@ -53,6 +53,27 @@ setImmediate(function() {
 
 
 			}
+			
+			try{
+				var clz = Java.use("javax.net.ssl.X509TrustManager");
+				clz.checkServerTrusted.overload('[Ljava.security.cert.X509Certificate;','java.lang.String').implementation = function(a,b){
+					console.log("[*]hook javax.net.ssl.X509TrustManager.checkServerTrusted('[Ljava.security.cert.X509Certificate;','java.lang.String') successful");
+					return;
+
+				}
+			}catch(e){
+				    if (e.message.indexOf('ClassNotFoundException') != -1) {
+
+				console.log(clz + " not found!");
+			     } else {
+
+				throw new Error(e);
+
+			     }
+
+			}
+
+});
 
 		});
 
