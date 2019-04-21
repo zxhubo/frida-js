@@ -8,7 +8,7 @@
 - [https://github.com/0xdea/frida-scripts](https://github.com/0xdea/frida-scripts)
 - [https://codeshare.frida.re/@dzonerzy/fridantiroot/](https://codeshare.frida.re/@dzonerzy/fridantiroot/)
 - [https://wx.zsxq.com/dweb/#/index/144242521142](https://wx.zsxq.com/dweb/#/index/144242521142)
-- []()
+- [https://www.css-js.com/tools/unicode.html](https://www.css-js.com/tools/unicode.html)
 - []()
 - []()
 - []()
