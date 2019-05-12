@@ -30,7 +30,6 @@ String.prototype.endWith = function(str){
 
 console.log("[*] hook starting");
 Java.perform(function(){
-    var InterfaceImpl=Java.use("com.example.cryptutils.util.InterfaceImpl");
     Java.enumerateLoadedClasses(
                 {
                     "onMatch": function (className) {
