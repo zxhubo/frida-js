@@ -30,25 +30,23 @@ String.prototype.endWith = function(str){
 
 console.log("[*] hook starting");
 Java.perform(function(){
-
     var InterfaceImpl=Java.use("com.example.cryptutils.util.InterfaceImpl");
     Java.enumerateLoadedClasses(
                 {
                     "onMatch": function (className) {
 
-                        // 排除基本类型
-                        var basicType=["byte","int","boolean","double","long","float","char","short"];
-                        if (basicType.indexOf(className)>0) {
-                            return;
-                        }
-                        // 排除一些关键字等,例如void等
+                        // 排除一些关键字和基本类型等,例如void、byte、int等
                         if(className.indexOf(".")<0){
                             return;
                         }
                         // 排除一些系统类
                         
-                        if (className.startWith("android")|className.startWith("java")|className.startWith("com.android")
-                            |className.startWith("sun")|className.startWith("org")|className.startWith("[")|className.startWith("libcore")) {
+                        // if (className.startWith("android")|className.startWith("java")|className.startWith("com.android")
+                        //     |className.startWith("sun")|className.startWith("org")|className.startWith("[")|className.startWith("libcore")) {
+                        //     return;
+                        // }
+                        var pattern = /^(android|java|sun|org|libcore|\[|com\.android)/g;
+                        if (pattern.test(className)) {
                             return;
                         }
                         var hookCls = Java.use(className);
