@@ -1,3 +1,5 @@
+/* author:bobby *day:2019-05-01 */
+'use strict'
 Java.perform(
         function x() {
 
