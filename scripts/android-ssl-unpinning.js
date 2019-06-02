@@ -1,5 +1,5 @@
-
-"use strict"
+/* author:bobby *day:2019-06-01 */
+'use strict'
 
 setImmediate(function() {
 	if(Java.available){
