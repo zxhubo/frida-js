@@ -2,7 +2,7 @@
 var clazz_Thread = null;
 var clazz_Log = null;
 // method 1
-function getCaller(){
+function getStackTrace(){
 	return clazz_Thread.currentThread().getStackTrace().slice(2,5).reverse().toString().replace(/,/g,"\r\n");
 	//return clazz_Thread.currentThread().getStackTrace().slice(2,5).reverse().toString().replace(/,/g,"\r\n");
 }
