@@ -9,7 +9,7 @@ Interceptor.attach(Module.getExportByName("xxx.so" , "xxx"), {
     }
 });
 
-	var c = undefined;
+    var c = undefined;
     var exports = Module.enumerateExportsSync("xxx.so");
     for(var i=0;i<exports.length;i++){
         if(exports[i].name=="xxx"){
