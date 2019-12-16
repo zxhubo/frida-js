@@ -7,11 +7,10 @@ function getStackTrace(){
 
 Java.perform(function(){
 		
-		clazz_Log = Java.use("android.util.Log");
+	clazz_Log = Java.use("android.util.Log");
 	});
 
 Java.perform(function(){
-		
 		console.error("[***] Hooking im strating");
     var Toast=Java.use("android.widget.Toast");
         Toast.makeText.overload('android.content.Context', 'java.lang.CharSequence', 'int').implementation=function(p1,p2,p3){
