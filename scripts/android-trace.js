@@ -19,8 +19,19 @@ Java.perform(function(){
             return this.makeText(p1,p2,p3);
         }
     var TXWebView=Java.use("com.tencent.smtt.sdk.WebView");
+	
+	TXWebView.getUrl.implementation=function(){
+            console.warn("Hooking com.tencent.smtt.sdk.WebView.getUrl(p1) successful");
+            
+            var ret=this.getUrl();
+            console.log("TXWebView.getUrl() ,ret="+ret);
+            return ret;
 
-	   	TXWebView.loadUrl.overload('java.lang.String').implementation=function(p1){
+
+        }
+	
+
+	TXWebView.loadUrl.overload('java.lang.String').implementation=function(p1){
             console.warn("Hooking com.tencent.smtt.sdk.WebView.loadUrl(p1) successful,url = "+p1);
             getStackTrace();
             this.loadUrl(p1);
@@ -62,15 +73,27 @@ Java.perform(function(){
             this.evaluateJavascript(p1,p2);
         }
     var WebView=Java.use("android.webkit.WebView");
+	
+	WebView.getUrl.implementation=function(){
+            console.warn("Hooking android.webkit.WebView.getUrl(p1) successful");
+            
+            var ret=this.getUrl();
+            console.log("WebView.getUrl() ,ret="+ret);
+            return ret;
+
+
+        }
+	
+	
         WebView.loadUrl.overload('java.lang.String').implementation=function(p1){
-            console.warn("Hooking loadUrl(p1) successful,url = "+p1);
+            console.warn("Hooking android.webkit.WebView.loadUrl(p1) successful,url = "+p1);
             getStackTrace();
             this.loadUrl(p1);
         }
 
 
         WebView.loadUrl.overload('java.lang.String','java.util.Map').implementation=function(p1,p2){
-            console.warn("Hooking loadUrl(p1,p2) successful,url = "+p1+", map ="+p2.size());
+            console.warn("Hooking android.webkit.WebView.loadUrl(p1,p2) successful,url = "+p1+", map ="+p2.size());
             getStackTrace();
             // var hashMapNode = Java.use('java.util.HashMap$Node');
             // var iterator = p2.entrySet().iterator();
