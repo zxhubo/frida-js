@@ -146,7 +146,7 @@ Java.perform(function(){
             return this.getInstance();
         }
     //Activity
-  		var Activity=Java.use("android.app.Activity");
+    var Activity=Java.use("android.app.Activity");
 
         Activity.startActivity.overload('android.content.Intent').implementation=function(p1){
               console.warn("Hooking android.app.Activity.startActivity(p1) successful, p1="+p1);
@@ -195,8 +195,8 @@ Java.perform(function(){
               this.startActivity(p1,p2,p3);
         }
 
-	    //Service
-	    var Service=Java.use("android.app.Service");
+    //Service
+    var Service=Java.use("android.app.Service");
 
         Service.startActivity.overload('android.content.Intent').implementation=function(p1){
               console.warn("Hooking android.app.Service.startActivity(p1) successful, p1="+p1);
@@ -247,8 +247,8 @@ Java.perform(function(){
 
 
 
-	    //ContextWrapper
-	    var ContextWrapper=Java.use("android.content.ContextWrapper");
+    //ContextWrapper
+    var ContextWrapper=Java.use("android.content.ContextWrapper");
         ContextWrapper.startActivity.overload('android.content.Intent').implementation=function(p1){
               console.warn("Hooking android.content.ContextWrapper.startActivity(p1) successful, p1="+p1);
 
