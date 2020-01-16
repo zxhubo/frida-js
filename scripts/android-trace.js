@@ -126,6 +126,19 @@ Java.perform(function(){
             // getStackTrace();
             this.evaluateJavascript(p1,p2);
         }
+	
+	WebView.setWebChromeClient.implementation=function(p1){
+            console.warn("Hooking android.webkit.WebView.setWebChromeClient() successful, p1="+p1);
+            // getStackTrace();
+            this.setWebChromeClient(p1);
+        }
+
+        WebView.setWebViewClient.implementation=function(p1){
+            console.warn("Hooking android.webkit.WebView.setWebViewClient() successful, p1="+p1);
+            // getStackTrace();
+            this.setWebViewClient(p1);
+        }
+	
     var CookieManager=Java.use("android.webkit.CookieManager");
         CookieManager.getInstance.implementation=function(){
             console.warn("Hooking CookieManager.getInstance() successful");
