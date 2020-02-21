@@ -1,4 +1,6 @@
 
+/* author:bobby *day:2019-06-01 ,changed by booby *day:2020-02-21*/
+'use strict'
 var clazz_Log = null;
 
 function getStackTrace(){
@@ -165,7 +167,7 @@ Java.perform(function(){
               console.warn("Hooking android.app.Activity.startService(p1) successful, p1="+p1);
 
               console.log(decodeURIComponent(p1.toUri(256)));
-              this.startService(p1);
+              return this.startService(p1);
         }
 
         Activity.sendBroadcast.overload('android.content.Intent').implementation=function(p1){
