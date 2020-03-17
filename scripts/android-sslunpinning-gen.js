@@ -208,6 +208,37 @@ Java.perform(function() {
 		 }
 		
 	}
+	
+	try{
+		var CertificatePinner = Java.use("okhttp3.CertificatePinner");
+		CertificatePinner.check$okhttp.overload('java.lang.String', 'k.c0.c.a').implementation = function(arg11, arg12) {
+        		console.warn("[+] Hooking okhttp3.CertificatePinner.check$okhttp('java.lang.String', 'k.c0.c.a') succeed！！！");
+			return;
+		}
+		CertificatePinner.check.overload('java.lang.String', 'java.util.List').implementation = function() {
+			console.log("[*] Hooking okhttp3.CertificatePinner.check('java.lang.String', 'java.util.List')successful");
+			return;
+        	}
+
+        	CertificatePinner.check.overload('java.lang.String', '[Ljava.security.cert.Certificate;').implementation = function(p0, p1){
+                	console.log("[*] Hooking okhttp3.CertificatePinner.check('java.lang.String', '[Ljava.security.cert.Certificate;')successful");
+                	return;
+        	}
+		
+		
+		
+	}catch(e){
+		if (e.message.indexOf('ClassNotFoundException') != -1) {
+
+			console.log(CertificatePinner + " not found!");
+		 } else {
+
+			throw new Error(e);
+
+		 }
+		
+	}
+	
 
 });
 } 
