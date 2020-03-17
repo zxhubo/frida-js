@@ -210,6 +210,7 @@ Java.perform(function() {
 	}
 	
 	try{
+		//resolve okhttp3 ssl CertificatePinner and bypass this.
 		var CertificatePinner = Java.use("okhttp3.CertificatePinner");
 		CertificatePinner.check$okhttp.overload('java.lang.String', 'k.c0.c.a').implementation = function(arg11, arg12) {
         		console.warn("[+] Hooking okhttp3.CertificatePinner.check$okhttp('java.lang.String', 'k.c0.c.a') succeed！！！");
