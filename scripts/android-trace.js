@@ -74,6 +74,20 @@ Java.perform(function(){
             getStackTrace();
             this.evaluateJavascript(p1,p2);
         }
+	
+	TXWebView.setWebChromeClient.implementation=function(p1){
+	    console.warn("Hooking com.tencent.smtt.sdk.WebView.setWebChromeClient() successful, p1="+p1);
+	    // getStackTrace();
+	    this.setWebChromeClient(p1);
+	}
+
+	TXWebView.setWebViewClient.implementation=function(p1){
+	    console.warn("Hooking com.tencent.smtt.sdk.WebView.setWebViewClient() successful, p1="+p1);
+	    // getStackTrace();
+	    this.setWebViewClient(p1);
+	}
+	
+    //hook android.webkit.WebView method's
     var WebView=Java.use("android.webkit.WebView");
 	
 	WebView.getUrl.implementation=function(){
