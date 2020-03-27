@@ -22,6 +22,31 @@ Java.perform(function() {
 
 	clazz_Thread = Java.use("java.lang.Thread");
 	clazz_Log = Java.use("android.util.Log");
+	
+	var CertificatePinner = Java.use('okhttp3.CertificatePinner');
+
+	       // console.log("[+] OkHTTP 3.x Found");
+	    CertificatePinner.check.overload('java.lang.String', 'java.util.List').implementation = function() {
+			console.log("[*]Hook okhttp3.CertificatePinner.check('java.lang.String', 'java.util.List')successful");
+			// getStackTrace();
+			return;
+	    };
+
+	    CertificatePinner.check.overload('java.lang.String', '[Ljava.security.cert.Certificate;').implementation = function(p0, p1){
+			// do nothing
+		console.log("Hook okhttp3.CertificatePinner.check('java.lang.String', '[Ljava.security.cert.Certificate;')successful");
+		return;
+	    };
+
+
+	    CertificatePinner.check$okhttp.overload('java.lang.String', 'k.c0.c.a').implementation = function(arg11, arg12) {
+		console.warn("[+] Hooking okhttp3.CertificatePinner.check$okhttp('java.lang.String', 'k.c0.c.a') succeed！！！");
+		getStackTrace();
+		console.log(arg11);
+		console.log(arg12.class);
+		console.log("pin check");
+		return;
+	    }
 
 	try {
 
@@ -170,6 +195,15 @@ Java.perform(function() {
 				 send("WebViewClient onReceivedError invoked");
 				 return ;
 			};
+		
+			Platform2.stopLoading.implementation = function(){
+
+
+
+			console.log("webview calling stopLoading");
+
+
+			}
 
 
 
