@@ -161,6 +161,14 @@ Java.perform(function(){
             // getStackTrace();
             return this.getInstance();
         }
+	CookieManager.setCookie.overload('java.lang.String', 'java.lang.String').implementation=function(p1,p2){
+            console.warn("Hooking CookieManager.setCookie() successful");
+            console.log(p1+" :"+p2);
+            // getStackTrace();
+            return this.setCookie(p1,p2);
+        }
+	
+	
     //Activity
     var Activity=Java.use("android.app.Activity");
 
