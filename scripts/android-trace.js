@@ -13,7 +13,7 @@ Java.perform(function(){
 	});
 
 Java.perform(function(){
-		console.error("[***] Hooking im strating");
+    console.error("[***] Hooking im strating");
     var Toast=Java.use("android.widget.Toast");
         Toast.makeText.overload('android.content.Context', 'java.lang.CharSequence', 'int').implementation=function(p1,p2,p3){
             console.warn("Hooking makeText() successful");
@@ -86,6 +86,20 @@ Java.perform(function(){
 	    // getStackTrace();
 	    this.setWebViewClient(p1);
 	}
+
+    var CookieManager=Java.use("com.tencent.smtt.sdk.CookieManager");
+        CookieManager.getInstance.implementation=function(){
+            console.warn("Hooking com.tencent.smtt.sdk.CookieManager.getInstance() successful");
+            // getStackTrace();
+            return this.getInstance();
+        }
+
+        CookieManager.setCookie.overload('java.lang.String', 'java.lang.String').implementation=function(p1,p2){
+            console.warn("Hooking com.tencent.smtt.sdk.CookieManager.setCookie() successful");
+            console.log(p1+" :"+p2);
+            getStackTrace();
+            return this.setCookie(p1,p2);
+        }
 	
     //hook android.webkit.WebView method's
     var WebView=Java.use("android.webkit.WebView");
