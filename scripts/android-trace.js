@@ -185,6 +185,12 @@ Java.perform(function(){
 	
     //Activity
     var Activity=Java.use("android.app.Activity");
+	
+	Activity.finish.overload().implementation=function(){
+	      console.warn("Hooking android.app.Activity.finish() successful");
+	      getStackTrace();
+	      this.finish();
+	}
 
         Activity.startActivity.overload('android.content.Intent').implementation=function(p1){
               console.warn("Hooking android.app.Activity.startActivity(p1) successful, p1="+p1);
