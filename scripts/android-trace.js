@@ -20,6 +20,29 @@ Java.perform(function(){
             getStackTrace();
             return this.makeText(p1,p2,p3);
         }
+    var TextView=Java.use("android.widget.TextView");
+        TextView.setText.overload('java.lang.CharSequence').implementation=function(p1){
+            console.warn("Hooking setText() successful");
+            console.warn(p1);
+            getStackTrace();
+            return this.setText(p1);
+        }
+        TextView.setText.overload('int').implementation=function(p1){
+            console.warn("Hooking setText('int') successful");
+            console.warn(p1);
+            getStackTrace();
+            return this.setText(p1);
+        }
+	
+    var Dialog=Java.use("android.app.Dialog");
+        Dialog.show.implementation=function(){
+            console.warn("Hooking android.app.Dialog.show() successful");
+            getStackTrace();
+            this.show();
+
+        }
+	
+    //tentcent sdk webview
     var TXWebView=Java.use("com.tencent.smtt.sdk.WebView");
 	
 	TXWebView.getUrl.implementation=function(){
@@ -181,7 +204,7 @@ Java.perform(function(){
             // getStackTrace();
             return this.setCookie(p1,p2);
         }
-	
+		
 	
     //Activity
     var Activity=Java.use("android.app.Activity");
@@ -191,6 +214,13 @@ Java.perform(function(){
 	      getStackTrace();
 	      this.finish();
 	}
+	
+	Activity.finish.overload('int').implementation=function(int){
+            console.warn("Hooking android.app.Activity.finish('int') successful");
+            getStackTrace();
+            
+            this.finish(int);
+        } 
 
         Activity.startActivity.overload('android.content.Intent').implementation=function(p1){
               console.warn("Hooking android.app.Activity.startActivity(p1) successful, p1="+p1);
