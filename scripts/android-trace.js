@@ -222,6 +222,27 @@ Java.perform(function(){
       this.startActivity(p1,p2);
     }
 
+    Activity.startActivityForResult.overload('android.content.Intent', 'int').implementation=function(p1,p2){
+            console.warn("Hooking android.app.Activity.startActivityForResult('android.content.Intent', 'int') successful, p1="+p1);
+            getStackTrace();
+            console.log(decodeURIComponent(p1.toUri(256)));
+            this.startActivityForResult(p1,p2);
+        }
+
+    Activity.startActivityForResult.overload('android.content.Intent', 'int', 'android.os.Bundle').implementation=function(p1,p2,p3){
+        console.warn("Hooking android.app.Activity.startActivityForResult('android.content.Intent', 'int', 'android.os.Bundle') successful, p1="+p1);
+        getStackTrace();
+        console.log(decodeURIComponent(p1.toUri(256)));
+        this.startActivityForResult(p1,p2,p3);
+    }
+
+    Activity.startActivityForResult.overload('java.lang.String', 'android.content.Intent', 'int', 'android.os.Bundle').implementation=function(p1,p2,p3,p4){
+        console.warn("Hooking android.app.Activity.startActivityForResult('java.lang.String', 'android.content.Intent', 'int', 'android.os.Bundle') successful, p1="+p2);
+        getStackTrace();
+        console.log(decodeURIComponent(p2.toUri(256)));
+        this.startActivityForResult(p1,p2,p3,p4);
+    }
+  
     Activity.startService.overload('android.content.Intent').implementation=function(p1){
       console.warn("Hooking android.app.Activity.startService(p1) successful, p1="+p1);
       console.log(decodeURIComponent(p1.toUri(256)));
