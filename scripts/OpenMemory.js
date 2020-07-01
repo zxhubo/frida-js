@@ -19,8 +19,8 @@ Java.perform(function(){
         var name =exports[i].name;
         c=exports[i].address;
 
-        if(name=="_ZN3art7DexFile10OpenCommonEPKhjRKNSt3__112basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEjPKNS_10OatDexFileEbbPS9_PNS0_12VerifyResultE"){
-
+        //if(name=="_ZN3art7DexFile10OpenCommonEPKhjRKNSt3__112basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEjPKNS_10OatDexFileEbbPS9_PNS0_12VerifyResultE"){
+        if(name.indexOf("OpenCommon")!=-1){
             console.log("[***]"+name +" at :"+c);
             break;
         }
