@@ -252,24 +252,24 @@ Java.perform(function(){
     Activity.sendBroadcast.overload('android.content.Intent').implementation=function(p1){
       console.warn("Hooking android.app.Activity.sendBroadcast(p1) successful, p1="+p1);
       console.log(decodeURIComponent(p1.toUri(256)));
-      this.startActivity(p1);
+      this.sendBroadcast(p1);
     }
     Activity.sendBroadcast.overload('android.content.Intent', 'java.lang.String').implementation=function(p1,p2){
       console.warn("Hooking android.app.Activity.sendBroadcast(p1,p2) successful, p1="+p1);
       console.log(decodeURIComponent(p1.toUri(256)));
-      this.startActivity(p1,p2);
+      this.sendBroadcast(p1,p2);
     }
 
     Activity.sendBroadcast.overload('android.content.Intent', 'java.lang.String', 'android.os.Bundle').implementation=function(p1,p2,p3){
       console.warn("Hooking android.app.Activity.sendBroadcast(p1,p2) successful, p1="+p1);
       console.log(decodeURIComponent(p1.toUri(256)));
-      this.startActivity(p1,p2,3);
+      this.sendBroadcast(p1,p2,3);
     }
 
     Activity.sendBroadcast.overload('android.content.Intent', 'java.lang.String', 'int').implementation=function(p1,p2,p3){
       console.warn("Hooking android.app.Activity.sendBroadcast(p1,p2) successful, p1="+p1);
       console.log(decodeURIComponent(p1.toUri(256)));
-      this.startActivity(p1,p2,p3);
+      this.sendBroadcast(p1,p2,p3);
     }
 
   //hook Service methods
@@ -282,7 +282,7 @@ Java.perform(function(){
     Service.startActivity.overload('android.content.Intent', 'android.os.Bundle').implementation=function(p1,p2){
       console.warn("Hooking android.app.Service.startActivity(p1,p2) successful, p1="+p1);
       console.log(decodeURIComponent(p1.toUri(256)));
-      this.startService(p1,p2);
+      this.startActivity(p1,p2);
     }
 
     Service.startService.overload('android.content.Intent').implementation=function(p1){
@@ -416,6 +416,4 @@ Java.perform(function(){
       // getStackTrace();
       this.$init(p1,p2,p3,p4);
     }
-
-  
 });
