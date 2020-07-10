@@ -119,6 +119,11 @@ Java.perform(function(){
     }
   
   //hook android.webkit.WebView methods
+  // other WebView
+  //var WebView=Java.use("com.miui.webkit.WebView");
+  //var WebView=Java.use("com.miui.webkit_api.WebView");
+  //var WebView=Java.use("com.uc.webview.export.WebView");  
+  
   var WebView=Java.use("android.webkit.WebView");
     WebView.getUrl.implementation=function(){
       console.warn("Hooking android.webkit.WebView.getUrl(p1) successful");
@@ -181,6 +186,31 @@ Java.perform(function(){
       // getStackTrace();
       this.setWebViewClient(p1);
     }
+  
+// hook shouldOverrideUrlLoading and onJsPrompt 
+  
+var WebViewClient=Java.use("android.webkit.WebViewClient");
+
+  WebViewClient.shouldOverrideUrlLoading.overload('android.webkit.WebView', 'java.lang.String').implementation = function(arg_0, arg_1) {
+      console.warn("[***] Hook android.webkit.WebViewClient.shouldOverrideUrlLoading('android.webkit.WebView', 'java.lang.String') succeed ......");
+      console.log("WebViewClient->shouldOverrideUrlLoading (argType: android.webkit.WebView): " + arg_0);
+      console.log("WebViewClient->shouldOverrideUrlLoading (argType: java.lang.String): " + arg_1);
+      var retval = this.shouldOverrideUrlLoading(arg_0, arg_1);
+      console.log("WebViewClient->shouldOverrideUrlLoading (retType: boolean): " + retval);
+      return retval;
+  }
+  
+  WebViewClient.shouldOverrideUrlLoading.overload('android.webkit.WebView', 'android.webkit.WebResourceRequest').implementation = function(arg_0, arg_1) {
+      console.warn("[***] Hook android.webkit.WebViewClient.shouldOverrideUrlLoading('android.webkit.WebView', 'android.webkit.WebResourceRequest') succeed ......");
+      console.log("WebViewClient->shouldOverrideUrlLoading (argType: android.webkit.WebView): " + arg_0);
+      console.log("WebViewClient->shouldOverrideUrlLoading (argType: java.lang.String): " + arg_1.getUrl());
+      var retval = this.shouldOverrideUrlLoading(arg_0, arg_1);
+      console.log("WebViewClient->shouldOverrideUrlLoading (retType: boolean): " + retval);
+      return retval;
+  }
+  
+  
+  
 
   var CookieManager=Java.use("android.webkit.CookieManager");
     CookieManager.getInstance.implementation=function(){
