@@ -45,6 +45,57 @@ Java.perform(function(){
 
     }
   
+  String.contains.implementation = function(arg_0) {
+            console.warn("[***] Hook java.lang.String.contains() succeed ......");
+            console.log("String->contains (argType: java.lang.String): " + arg_0);
+            var retval = this.contains(arg_0);
+            console.log("String->contains (retType: java.lang.String): " + retval);
+            return retval;
+
+        }
+  
+  // Pattern
+  var Pattern = Java.use("java.util.regex.Pattern");
+
+        Pattern.compile.overload('java.lang.String').implementation = function(arg_0) {
+            console.warn("[***] Hook java.util.regex.Pattern.compile() succeed ......");
+            getStackTrace();
+            console.log("Pattern->compile (argType: java.lang.String): " + arg_0);
+            var retval = this.compile(arg_0);
+            console.log("Pattern->compile (retType: java.lang.String): " + retval);
+            return retval;
+
+        }
+        Pattern.compile.overload('java.lang.String', 'int').implementation = function(arg_0,arg_1) {
+            console.warn("[***] Hook java.util.regex.Pattern.compile(arg_0,arg_1) succeed ......");
+            getStackTrace();
+            console.log("Pattern->compile (argType: java.lang.String): " + arg_0);
+            var retval = this.compile(arg_0,arg_1);
+            console.log("Pattern->compile (retType: java.lang.String): " + retval);
+            return retval;
+
+        }
+
+        Pattern.matcher.overload('java.lang.CharSequence').implementation = function(arg_0) {
+            console.warn("[***] Hook java.util.regex.Pattern.matcher() succeed ......");
+            getStackTrace();
+            console.log("Pattern->matcher (argType: java.lang.String): " + arg_0);
+            var retval = this.matcher(arg_0);
+            console.log("Pattern->matcher (retType: java.lang.String): " + retval);
+            return retval;
+
+        }
+
+        Pattern.matcher.overload('java.lang.String', 'int').implementation = function(arg_0,arg_1) {
+            console.warn("[***] Hook java.util.regex.Pattern.matcher(arg_0,arg_1) succeed ......");
+            getStackTrace();
+            console.log("Pattern->matcher (argType: java.lang.String): " + arg_0);
+            var retval = this.matcher(arg_0,arg_1);
+            console.log("Pattern->matcher (retType: java.lang.String): " + retval);
+            return retval;
+
+        }
+  
   //textView
   var TextView=Java.use("android.widget.TextView");
     TextView.setText.overload('java.lang.CharSequence').implementation=function(p1){
