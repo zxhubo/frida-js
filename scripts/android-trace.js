@@ -14,12 +14,38 @@ Java.perform(function(){
 
 Java.perform(function(){
   console.error("[***] Hooking im strating");
+  
+  //Toast
   var Toast=Java.use("android.widget.Toast");
     Toast.makeText.overload('android.content.Context', 'java.lang.CharSequence', 'int').implementation=function(p1,p2,p3){
-      console.warn("Hooking makeText() successful");
+      console.warn("Hooking makeText(p1,p2,p3) successful");
       getStackTrace();
       return this.makeText(p1,p2,p3);
     }
+    Toast.makeText.overload('android.content.Context', 'android.os.Looper', 'java.lang.CharSequence', 'int').implementation=function(p1,p2,p3,p4){
+      console.warn("Hooking android.widget.Toast.makeText(p1,p2,p3,p4) successful");
+      getStackTrace();
+      return this.makeText(p1,p2,p3,p4);
+    }
+    Toast.show.implementation=function(){
+      console.warn("Hooking android.widget.Toast.show() successful");
+      getStackTrace();
+      return this.show();
+    }
+  
+ //String
+  
+  var String = Java.use("java.lang.String");
+    String.endsWith.implementation = function(arg_0) {
+        console.warn("[***] Hook java.lang.String.endsWith() succeed ......");
+        console.log("String->endsWith (argType: java.lang.String): " + arg_0);
+        var retval = this.endsWith(arg_0);
+        console.log("String->endsWith (retType: java.lang.String): " + retval);
+        return retval;
+
+    }
+  
+  //textView
   var TextView=Java.use("android.widget.TextView");
     TextView.setText.overload('java.lang.CharSequence').implementation=function(p1){
       console.warn("Hooking setText() successful");
