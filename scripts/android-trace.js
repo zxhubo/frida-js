@@ -85,16 +85,6 @@ Java.perform(function(){
             return retval;
 
         }
-
-        Pattern.matcher.overload('java.lang.String', 'int').implementation = function(arg_0,arg_1) {
-            console.warn("[***] Hook java.util.regex.Pattern.matcher(arg_0,arg_1) succeed ......");
-            getStackTrace();
-            console.log("Pattern->matcher (argType: java.lang.String): " + arg_0);
-            var retval = this.matcher(arg_0,arg_1);
-            console.log("Pattern->matcher (retType: java.lang.String): " + retval);
-            return retval;
-
-        }
   
   //textView
   var TextView=Java.use("android.widget.TextView");
