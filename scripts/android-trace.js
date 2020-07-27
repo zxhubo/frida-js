@@ -45,20 +45,20 @@ Java.perform(function(){
   
   var String = Java.use("java.lang.String");
     String.endsWith.implementation = function(arg_0) {
-        console.warn("[***] Hook java.lang.String.endsWith() succeed ......");
-        console.log("String->endsWith (argType: java.lang.String): " + arg_0);
-        var retval = this.endsWith(arg_0);
-        console.log("String->endsWith (retType: java.lang.String): " + retval);
-        return retval;
+      console.warn("[***] Hook java.lang.String.endsWith() succeed ......");
+      console.log("String->endsWith (argType: java.lang.String): " + arg_0);
+      var retval = this.endsWith(arg_0);
+      console.log("String->endsWith (retType: java.lang.String): " + retval);
+      return retval;
 
     }
   
   String.contains.implementation = function(arg_0) {
-            console.warn("[***] Hook java.lang.String.contains() succeed ......");
-            console.log("String->contains (argType: java.lang.String): " + arg_0);
-            var retval = this.contains(arg_0);
-            console.log("String->contains (retType: java.lang.String): " + retval);
-            return retval;
+    console.warn("[***] Hook java.lang.String.contains() succeed ......");
+    console.log("String->contains (argType: java.lang.String): " + arg_0);
+    var retval = this.contains(arg_0);
+    console.log("String->contains (retType: java.lang.String): " + retval);
+    return retval;
 
         }
   
@@ -124,94 +124,18 @@ Java.perform(function(){
       return this.setText(p1);
     }
   
-
-
-  //tentcent sdk webview
-  var TXWebView=Java.use("com.tencent.smtt.sdk.WebView");
-    TXWebView.getUrl.implementation=function(){
-      console.warn("Hooking com.tencent.smtt.sdk.WebView.getUrl(p1) successful");
-      var ret=this.getUrl();
-      console.log("TXWebView.getUrl() ,ret="+ret);
-      return ret;
-    }
+  //hook WebView methods
   
-
-    TXWebView.loadUrl.overload('java.lang.String').implementation=function(p1){
-      console.warn("Hooking com.tencent.smtt.sdk.WebView.loadUrl(p1) successful,url = "+p1);
-      getStackTrace();
-      this.loadUrl(p1);
-    }
-
-    TXWebView.loadUrl.overload('java.lang.String','java.util.Map').implementation=function(p1,p2){
-      console.warn("Hooking com.tencent.smtt.sdk.WebView.loadUrl(p1,p2) successful,url = "+p1+", map ="+p2.size());
-      getStackTrace();
-      // var hashMapNode = Java.use('java.util.HashMap$Node');
-      // var iterator = p2.entrySet().iterator();
-      // while(iterator.hasNext()){
-      //     var entry = Java.cast(iterator.next(),hashMapNode);
-      //     console.log(entry.getKey()+": "+entry.getValue());
-          
-      // }
-
-
-      //getStackTrace();
-      this.loadUrl(p1,p2);
-    }
-
-    TXWebView.addJavascriptInterface.implementation=function(p1,p2){
-      console.warn("Hooking com.tencent.smtt.sdk.WebView.addJavascriptInterface() successful, "+p1+":"+p2);
-      getStackTrace();
-      this.addJavascriptInterface(p1,p2);
-    }
-
-    TXWebView.removeJavascriptInterface.implementation=function(p1){
-      console.warn("Hooking com.tencent.smtt.sdk.WebView.removeJavascriptInterface() successful, "+p1);
-      getStackTrace();
-      this.removeJavascriptInterface(p1);
-    }
-
-
-    TXWebView.evaluateJavascript.implementation=function(p1,p2){
-      console.warn("Hooking com.tencent.smtt.sdk.WebView.evaluateJavascript() successful, p1="+p1);
-      getStackTrace();
-      this.evaluateJavascript(p1,p2);
-    }
-    
-    TXWebView.setWebChromeClient.implementation=function(p1){
-      console.warn("Hooking com.tencent.smtt.sdk.WebView.setWebChromeClient() successful, p1="+p1);
-      // getStackTrace();
-      this.setWebChromeClient(p1);
-    }
-
-    TXWebView.setWebViewClient.implementation=function(p1){
-      console.warn("Hooking com.tencent.smtt.sdk.WebView.setWebViewClient() successful, p1="+p1);
-      // getStackTrace();
-      this.setWebViewClient(p1);
-    }
-
-  var CookieManager=Java.use("com.tencent.smtt.sdk.CookieManager");
-    CookieManager.getInstance.implementation=function(){
-      console.warn("Hooking com.tencent.smtt.sdk.CookieManager.getInstance() successful");
-      // getStackTrace();
-      return this.getInstance();
-    }
-
-    CookieManager.setCookie.overload('java.lang.String', 'java.lang.String').implementation=function(p1,p2){
-      console.warn("Hooking com.tencent.smtt.sdk.CookieManager.setCookie() successful");
-      console.log(p1+" :"+p2);
-      getStackTrace();
-      return this.setCookie(p1,p2);
-    }
+  var WebView_name="android.webkit.WebView";
+  // var WebView_name="com.tencent.smtt.sdk.WebView";
+  // var WebView_name="com.uc.webview.export.WebView";
+  // var WebView_name="com.miui.webkit.WebView";
+  // var WebView_name="com.miui.webkit_api.WebView";
   
-  //hook android.webkit.WebView methods
-  // other WebView
-  //var WebView=Java.use("com.miui.webkit.WebView");
-  //var WebView=Java.use("com.miui.webkit_api.WebView");
-  //var WebView=Java.use("com.uc.webview.export.WebView");  
-  
-  var WebView=Java.use("android.webkit.WebView");
+  var WebView=Java.use(WebView_name);
+
     WebView.getUrl.implementation=function(){
-      console.warn("Hooking android.webkit.WebView.getUrl(p1) successful");
+      console.warn("Hooking "+WebView_name+".getUrl(p1) successful");
       var ret=this.getUrl();
       console.log("WebView.getUrl() ,ret="+ret);
       return ret;
@@ -219,58 +143,57 @@ Java.perform(function(){
 
 
     WebView.loadUrl.overload('java.lang.String').implementation=function(p1){
-      console.warn("Hooking android.webkit.WebView.loadUrl(p1) successful,url = "+p1);
+      console.warn("Hooking "+WebView_name+".loadUrl(p1) successful,url = "+p1);
       getStackTrace();
       this.loadUrl(p1);
     }
 
 
     WebView.loadUrl.overload('java.lang.String','java.util.Map').implementation=function(p1,p2){
-      console.warn("Hooking android.webkit.WebView.loadUrl(p1,p2) successful,url = "+p1+", map ="+p2.size());
+      console.warn("Hooking "+WebView_name+".loadUrl(p1,p2) successful,url = "+p1+", map.size() ="+p2.size());
       getStackTrace();
-      // var hashMapNode = Java.use('java.util.HashMap$Node');
-      // var iterator = p2.entrySet().iterator();
-      // while(iterator.hasNext()){
-      //     var entry = Java.cast(iterator.next(),hashMapNode);
-      //     console.log(entry.getKey()+": "+entry.getValue());
-          
-      // }
 
-
-      //getStackTrace();
+      if(p2!=null&p2.size()!=0){
+        var iterator = p2.entrySet().iterator();
+        while(iterator.hasNext()){
+            var entry = Java.cast(iterator.next(),Java.use('java.util.HashMap$Node'));
+            console.log(entry.getKey()+": "+entry.getValue());   
+        }
+      }
       this.loadUrl(p1,p2);
     }
 
     WebView.addJavascriptInterface.implementation=function(p1,p2){
-      console.warn("Hooking addJavascriptInterface() successful, "+p1+":"+p2);
-      getStackTrace();
+      console.warn("Hooking "+WebView_name+".addJavascriptInterface() successful, "+p1+":"+p2);
+      // getStackTrace();
       this.addJavascriptInterface(p1,p2);
     }
 
     WebView.removeJavascriptInterface.implementation=function(p1){
-      console.warn("Hooking removeJavascriptInterface() successful, "+p1);
+      console.warn("Hooking "+WebView_name+".removeJavascriptInterface() successful, "+p1);
       // getStackTrace();
       this.removeJavascriptInterface(p1);
     }
 
 
     WebView.evaluateJavascript.implementation=function(p1,p2){
-      console.warn("Hooking android.webkit.WebView.evaluateJavascript() successful, p1="+p1);
-      // getStackTrace();
+      console.warn("Hooking "+WebView_name+".evaluateJavascript() successful, p1="+p1);
+      getStackTrace();
       this.evaluateJavascript(p1,p2);
     }
 
     WebView.setWebChromeClient.implementation=function(p1){
-      console.warn("Hooking android.webkit.WebView.setWebChromeClient() successful, p1="+p1);
+      console.warn("Hooking "+WebView_name+".setWebChromeClient() successful, p1="+p1);
       // getStackTrace();
       this.setWebChromeClient(p1);
     }
 
     WebView.setWebViewClient.implementation=function(p1){
-      console.warn("Hooking android.webkit.WebView.setWebViewClient() successful, p1="+p1);
+      console.warn("Hooking "+WebView_name+".setWebViewClient() successful, p1="+p1);
       // getStackTrace();
       this.setWebViewClient(p1);
     }
+ 
   
   // hook shouldOverrideUrlLoading and onJsPrompt 
   
@@ -293,18 +216,57 @@ Java.perform(function(){
         console.log("WebViewClient->shouldOverrideUrlLoading (retType: boolean): " + retval);
         return retval;
     }
-  var WebChromeClient=Java.use("android.webkit.WebChromeClient");
-    WebChromeClient.onJsPrompt.overload('android.webkit.WebView', 'java.lang.String', 'java.lang.String', 'java.lang.String', 'android.webkit.JsPromptResult').implementation = function(arg_0, arg_1, arg_2, arg_3, arg_4) {
-      console.warn("[***] Hook android.webkit.WebChromeClient.onJsPrompt() succeed ......");
-      console.log("WebChromeClient->onJsPrompt (argType: android.webkit.WebView): " + arg_0);
+
+  var WebChromeClient_name="xxx";
+  var WebChromeClient = Java.use(WebChromeClient_name);
+
+    WebChromeClient.onJsPrompt.implementation = function(arg_0, arg_1, arg_2, arg_3, arg_4) {
+      console.warn("Hook "+WebChromeClient_name+".onJsPrompt() succeed ......");
+      console.log("WebChromeClient->onJsPrompt (argType: WebView): " + arg_0);
       console.log("WebChromeClient->onJsPrompt (argType: java.lang.String): " + arg_1);
       console.log("WebChromeClient->onJsPrompt (argType: java.lang.String): " + arg_2);
       console.log("WebChromeClient->onJsPrompt (argType: java.lang.String): " + arg_3);
-      console.log("WebChromeClient->onJsPrompt (argType: android.webkit.JsPromptResult): " + arg_4);
+      console.log("WebChromeClient->onJsPrompt (argType: JsPromptResult): " + arg_4);
       var retval = this.onJsPrompt(arg_0, arg_1, arg_2, arg_3, arg_4);
       console.log("WebChromeClient->onJsPrompt (retType: boolean): " + retval);
       return retval;
     }
+
+    WebChromeClient.onJsConfirm.implementation = function(arg_0, arg_1, arg_2, arg_3) {
+      console.warn("Hook "+WebChromeClient_name+".onJsConfirm() succeed ......");
+      console.log("WebChromeClient->onJsConfirm (argType: android.webkit.WebView): " + arg_0);
+      console.log("WebChromeClient->onJsConfirm (argType: java.lang.String): " + arg_1);
+      console.log("WebChromeClient->onJsConfirm (argType: java.lang.String): " + arg_2);
+      console.log("WebChromeClient->onJsConfirm (argType: JsConfirmResult): " + arg_3);
+      var retval = this.onJsConfirm(arg_0, arg_1, arg_2, arg_3);
+      console.log("WebChromeClient->onJsConfirm (retType: boolean): " + retval);
+      return retval;
+    }
+
+    WebChromeClient.onConsoleMessage.implementation = function(arg_0) {
+      console.warn("Hook "+WebChromeClient_name+".onConsoleMessage() succeed ......");
+      console.log(arg_0.message())
+      console.log(arg_0.toString())
+      var retval = this.onConsoleMessage(arg_0);
+      console.log("WebChromeClient->onConsoleMessage (retType: boolean): " + retval);
+      return retval;
+    }
+  
+  
+  var CookieManager=Java.use("com.tencent.smtt.sdk.CookieManager");
+    CookieManager.getInstance.implementation=function(){
+      console.warn("Hooking com.tencent.smtt.sdk.CookieManager.getInstance() successful");
+      // getStackTrace();
+      return this.getInstance();
+    }
+
+    CookieManager.setCookie.overload('java.lang.String', 'java.lang.String').implementation=function(p1,p2){
+      console.warn("Hooking com.tencent.smtt.sdk.CookieManager.setCookie() successful");
+      console.log(p1+" :"+p2);
+      getStackTrace();
+      return this.setCookie(p1,p2);
+    }
+  
 
 
   var CookieManager=Java.use("android.webkit.CookieManager");
