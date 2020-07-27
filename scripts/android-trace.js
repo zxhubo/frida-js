@@ -32,6 +32,14 @@ Java.perform(function(){
       getStackTrace();
       return this.show();
     }
+ 
+  // hook Dialog's show
+  var Dialog=Java.use("android.app.Dialog");
+    Dialog.show.implementation=function(){
+      console.warn("Hooking android.app.Dialog.show() successful");
+      getStackTrace();
+      this.show();
+    }
   
  //String
   
@@ -57,34 +65,49 @@ Java.perform(function(){
   // Pattern
   var Pattern = Java.use("java.util.regex.Pattern");
 
-        Pattern.compile.overload('java.lang.String').implementation = function(arg_0) {
-            console.warn("[***] Hook java.util.regex.Pattern.compile() succeed ......");
-            getStackTrace();
-            console.log("Pattern->compile (argType: java.lang.String): " + arg_0);
-            var retval = this.compile(arg_0);
-            console.log("Pattern->compile (retType: java.lang.String): " + retval);
-            return retval;
+    Pattern.compile.overload('java.lang.String').implementation = function(arg_0) {
+        console.warn("[***] Hook java.util.regex.Pattern.compile() succeed ......");
+        getStackTrace();
+        console.log("Pattern->compile (argType: java.lang.String): " + arg_0);
+        var retval = this.compile(arg_0);
+        console.log("Pattern->compile (retType: java.lang.String): " + retval);
+        return retval;
+    }
+  
+    Pattern.compile.overload('java.lang.String', 'int').implementation = function(arg_0,arg_1) {
+        console.warn("[***] Hook java.util.regex.Pattern.compile(arg_0,arg_1) succeed ......");
+        getStackTrace();
+        console.log("Pattern->compile (argType: java.lang.String): " + arg_0);
+        var retval = this.compile(arg_0,arg_1);
+        console.log("Pattern->compile (retType: java.lang.String): " + retval);
+        return retval;
 
-        }
-        Pattern.compile.overload('java.lang.String', 'int').implementation = function(arg_0,arg_1) {
-            console.warn("[***] Hook java.util.regex.Pattern.compile(arg_0,arg_1) succeed ......");
-            getStackTrace();
-            console.log("Pattern->compile (argType: java.lang.String): " + arg_0);
-            var retval = this.compile(arg_0,arg_1);
-            console.log("Pattern->compile (retType: java.lang.String): " + retval);
-            return retval;
+    }
 
-        }
+    Pattern.matcher.overload('java.lang.CharSequence').implementation = function(arg_0) {
+        console.warn("[***] Hook java.util.regex.Pattern.matcher() succeed ......");
+        getStackTrace();
+        console.log("Pattern->matcher (argType: java.lang.String): " + arg_0);
+        var retval = this.matcher(arg_0);
+        console.log("Pattern->matcher (retType: java.lang.String): " + retval);
+        return retval;
 
-        Pattern.matcher.overload('java.lang.CharSequence').implementation = function(arg_0) {
-            console.warn("[***] Hook java.util.regex.Pattern.matcher() succeed ......");
-            getStackTrace();
-            console.log("Pattern->matcher (argType: java.lang.String): " + arg_0);
-            var retval = this.matcher(arg_0);
-            console.log("Pattern->matcher (retType: java.lang.String): " + retval);
-            return retval;
+    }
+  
+    Pattern.matcher.overload('java.lang.CharSequence').implementation = function(arg_0) {
 
-        }
+      if(arg_0=="http://xxx.xxx.xxx/"){
+        console.warn("[***] Hook java.util.regex.Pattern.matcher() succeed ......");
+        // getStackTrace();
+        console.log("Pattern->matcher (argType: java.lang.String): " + arg_0);
+        var retval = this.matcher(arg_0);
+        console.log("Pattern->matcher (retType: java.lang.String): " + retval);
+        return retval;
+
+      }else{
+        return this.matcher(arg_0);
+      }
+     }
   
   //textView
   var TextView=Java.use("android.widget.TextView");
@@ -101,12 +124,7 @@ Java.perform(function(){
       return this.setText(p1);
     }
   
-  var Dialog=Java.use("android.app.Dialog");
-    Dialog.show.implementation=function(){
-      console.warn("Hooking android.app.Dialog.show() successful");
-      getStackTrace();
-      this.show();
-    }
+
 
   //tentcent sdk webview
   var TXWebView=Java.use("com.tencent.smtt.sdk.WebView");
