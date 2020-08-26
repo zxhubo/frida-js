@@ -19,3 +19,10 @@ while(iterator.hasNext()){
 	console.log(entry.getKey());
 	console.log(entry.getValue());
 }
+
+//enumerate java.util.Set
+
+var iterator=set.iterator();
+while (iterator.hasNext()) {
+  console.log(iterator.next());
+}
