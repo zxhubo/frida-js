@@ -40,6 +40,27 @@ Java.perform(function(){
       getStackTrace();
       this.show();
     }
+
+ //if or not dynamic load so、dex、apk、jar or other files
+  
+  var System=Java.use("java.lang.System");
+  System.load.implementation=function(p1){
+    console.warn("Hooking java.lang.System.load() successful");
+    console.log(p1);
+    getStackTrace();
+    this.load(p1);
+  }
+
+  var DexClassLoader=Java.use("dalvik.system.DexClassLoader");
+  DexClassLoader.$init.implementation=function(p1,p2,p3,p4){
+      console.warn("Hooking dalvik.system.DexClassLoader.$init() successful");
+      console.log(p1);
+      console.log(p2);
+      console.log(p3);
+      console.log(p4);
+      getStackTrace();
+      this.$init(p1,p2,p3,p4);
+  }
   
  //String
   
