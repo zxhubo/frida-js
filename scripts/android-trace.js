@@ -153,7 +153,6 @@ Java.perform(function(){
   // var WebView_name="com.miui.webkit_api.WebView";
   
   var WebView=Java.use(WebView_name);
-
     WebView.getUrl.implementation=function(){
       console.warn("Hooking "+WebView_name+".getUrl(p1) successful");
       var ret=this.getUrl();
@@ -161,18 +160,15 @@ Java.perform(function(){
       return ret;
     }
 
-
     WebView.loadUrl.overload('java.lang.String').implementation=function(p1){
       console.warn("Hooking "+WebView_name+".loadUrl(p1) successful,url = "+p1);
       getStackTrace();
       this.loadUrl(p1);
     }
 
-
     WebView.loadUrl.overload('java.lang.String','java.util.Map').implementation=function(p1,p2){
       console.warn("Hooking "+WebView_name+".loadUrl(p1,p2) successful,url = "+p1+", map.size() ="+p2.size());
       getStackTrace();
-
       if(p2!=null&p2.size()!=0){
         var iterator = p2.entrySet().iterator();
         while(iterator.hasNext()){
@@ -194,7 +190,6 @@ Java.perform(function(){
       // getStackTrace();
       this.removeJavascriptInterface(p1);
     }
-
 
     WebView.evaluateJavascript.implementation=function(p1,p2){
       console.warn("Hooking "+WebView_name+".evaluateJavascript() successful, p1="+p1);
@@ -256,9 +251,6 @@ Java.perform(function(){
       arg2.proceed();
       return;
      }
-
-
-
   } catch(e) {
 
     if (e.message.indexOf('ClassNotFoundException') != -1) {
@@ -313,8 +305,6 @@ Java.perform(function(){
         console.log("WebChromeClient->onConsoleMessage (retType: boolean): " + retval);
         return retval;
       }
-
-
   } catch(e) {
 
     if (e.message.indexOf('ClassNotFoundException') != -1) {
@@ -382,24 +372,24 @@ Java.perform(function(){
     }
 
     Activity.startActivityForResult.overload('android.content.Intent', 'int').implementation=function(p1,p2){
-            console.warn("Hooking android.app.Activity.startActivityForResult('android.content.Intent', 'int') successful, p1="+p1);
-            getStackTrace();
-            console.log(decodeURIComponent(p1.toUri(256)));
-            this.startActivityForResult(p1,p2);
+      console.warn("Hooking android.app.Activity.startActivityForResult('android.content.Intent', 'int') successful, p1="+p1);
+      getStackTrace();
+      console.log(decodeURIComponent(p1.toUri(256)));
+      this.startActivityForResult(p1,p2);
         }
 
     Activity.startActivityForResult.overload('android.content.Intent', 'int', 'android.os.Bundle').implementation=function(p1,p2,p3){
-        console.warn("Hooking android.app.Activity.startActivityForResult('android.content.Intent', 'int', 'android.os.Bundle') successful, p1="+p1);
-        getStackTrace();
-        console.log(decodeURIComponent(p1.toUri(256)));
-        this.startActivityForResult(p1,p2,p3);
+      console.warn("Hooking android.app.Activity.startActivityForResult('android.content.Intent', 'int', 'android.os.Bundle') successful, p1="+p1);
+      getStackTrace();
+      console.log(decodeURIComponent(p1.toUri(256)));
+      this.startActivityForResult(p1,p2,p3);
     }
 
     Activity.startActivityForResult.overload('java.lang.String', 'android.content.Intent', 'int', 'android.os.Bundle').implementation=function(p1,p2,p3,p4){
-        console.warn("Hooking android.app.Activity.startActivityForResult('java.lang.String', 'android.content.Intent', 'int', 'android.os.Bundle') successful, p1="+p2);
-        getStackTrace();
-        console.log(decodeURIComponent(p2.toUri(256)));
-        this.startActivityForResult(p1,p2,p3,p4);
+      console.warn("Hooking android.app.Activity.startActivityForResult('java.lang.String', 'android.content.Intent', 'int', 'android.os.Bundle') successful, p1="+p2);
+      getStackTrace();
+      console.log(decodeURIComponent(p2.toUri(256)));
+      this.startActivityForResult(p1,p2,p3,p4);
     }
   
     Activity.startService.overload('android.content.Intent').implementation=function(p1){
@@ -472,8 +462,6 @@ Java.perform(function(){
       console.log(decodeURIComponent(p1.toUri(256)));
       this.sendBroadcast(p1,p2,p3);
     }
-
-
 
   //ContextWrapper
   var ContextWrapper=Java.use("android.content.ContextWrapper");
