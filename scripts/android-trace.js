@@ -8,7 +8,6 @@ function getStackTrace(){
 }
 
 Java.perform(function(){
-    
   clazz_Log = Java.use("android.util.Log");
   });
 
@@ -216,92 +215,144 @@ Java.perform(function(){
     }
  
   
-  // hook shouldOverrideUrlLoading and onJsPrompt 
+  // hook WebViewClient 
+  // 因为这里的WebViewClient_name针对于每个app都会不同，为了方便不用每次都要去注释代码出错，使用try catch来捕获异常
   
-  var WebViewClient=Java.use("android.webkit.WebViewClient");
+  try {
 
-    WebViewClient.shouldOverrideUrlLoading.overload('android.webkit.WebView', 'java.lang.String').implementation = function(arg_0, arg_1) {
-        console.warn("[***] Hook android.webkit.WebViewClient.shouldOverrideUrlLoading('android.webkit.WebView', 'java.lang.String') succeed ......");
-        console.log("WebViewClient->shouldOverrideUrlLoading (argType: android.webkit.WebView): " + arg_0);
-        console.log("WebViewClient->shouldOverrideUrlLoading (argType: java.lang.String): " + arg_1);
-        var retval = this.shouldOverrideUrlLoading(arg_0, arg_1);
-        console.log("WebViewClient->shouldOverrideUrlLoading (retType: boolean): " + retval);
+    var WebViewClient_name="xxx.WebViewClient";
+    var WebViewClient=Java.use(WebViewClient_name);
+
+    var overloads=WebViewClient.shouldOverrideUrlLoading.overloads;
+    overloads.forEach(function(overload) {
+      var argsType="('";
+      overload.argumentTypes.forEach(function(type){                    
+        argsType=argsType+type.className+"','";            
+      }); 
+      if (argsType.length >1) {
+        argsType=argsType.substr(0, argsType.length - 2);
+      }
+      argsType=argsType+")";      
+      overload.implementation=function(){
+        console.warn("Hook "+WebViewClient_name+".shouldOverrideUrlLoading"+argsType+" succeed ......");
+        getStackTrace();
+        console.log("shouldOverrideUrlLoading->arg[0]:"+arguments[0].getUrl());
+        if (argsType.indexOf("WebResourceRequest")>-1) {
+          console.log("shouldOverrideUrlLoading->arg[1]:"+decodeURIComponent(arguments[1].getUrl()));
+        }else{
+          console.log("shouldOverrideUrlLoading->arg[1]:"+decodeURIComponent(arguments[1]));
+        }
+
+        var ret= overload.apply(this,arguments);
+        console.log("shouldOverrideUrlLoading ret="+ret);
+        return ret;
+      }
+
+    });
+
+    WebViewClient.onReceivedSslError.implementation = function(arg1,arg2,arg3){
+      console.log("Hook "+WebViewClient_name+".onReceivedSslError() successful");
+      getStackTrace();
+      arg2.proceed();
+      return;
+     }
+
+
+
+  } catch(e) {
+
+    if (e.message.indexOf('ClassNotFoundException') != -1) {
+
+      console.warn(WebViewClient_name + " not found!");
+    } else {
+      // throw new Error(e);
+    }
+  }
+  
+  // hook WebChromeClient 
+
+  try {
+    var WebChromeClient_name="xxx.WebChromeClient";
+    var WebChromeClient = Java.use(WebChromeClient_name);
+
+      WebChromeClient.onJsPrompt.implementation = function(arg_0, arg_1, arg_2, arg_3, arg_4) {
+        console.warn("Hook "+WebChromeClient_name+".onJsPrompt() succeed ......");
+        console.log("WebChromeClient->onJsPrompt (argType: WebView): " + arg_0);
+        console.log("WebChromeClient->onJsPrompt (argType: java.lang.String): " + arg_1);
+        console.log("WebChromeClient->onJsPrompt (argType: java.lang.String): " + arg_2);
+        console.log("WebChromeClient->onJsPrompt (argType: java.lang.String): " + arg_3);
+        console.log("WebChromeClient->onJsPrompt (argType: JsPromptResult): " + arg_4);
+        var retval = this.onJsPrompt(arg_0, arg_1, arg_2, arg_3, arg_4);
+        console.log("WebChromeClient->onJsPrompt (retType: boolean): " + retval);
         return retval;
-    }
+      }
 
-    WebViewClient.shouldOverrideUrlLoading.overload('android.webkit.WebView', 'android.webkit.WebResourceRequest').implementation = function(arg_0, arg_1) {
-        console.warn("[***] Hook android.webkit.WebViewClient.shouldOverrideUrlLoading('android.webkit.WebView', 'android.webkit.WebResourceRequest') succeed ......");
-        console.log("WebViewClient->shouldOverrideUrlLoading (argType: android.webkit.WebView): " + arg_0);
-        console.log("WebViewClient->shouldOverrideUrlLoading (argType: java.lang.String): " + arg_1.getUrl());
-        var retval = this.shouldOverrideUrlLoading(arg_0, arg_1);
-        console.log("WebViewClient->shouldOverrideUrlLoading (retType: boolean): " + retval);
+
+      WebChromeClient.onJsConfirm.implementation = function(arg_0, arg_1, arg_2, arg_3) {
+        console.warn("Hook "+WebChromeClient_name+".onJsConfirm() succeed ......");
+        console.log("WebChromeClient->onJsConfirm (argType: android.webkit.WebView): " + arg_0);
+        console.log("WebChromeClient->onJsConfirm (argType: java.lang.String): " + arg_1);
+        console.log("WebChromeClient->onJsConfirm (argType: java.lang.String): " + arg_2);
+        console.log("WebChromeClient->onJsConfirm (argType: JsConfirmResult): " + arg_3);
+        var retval = this.onJsConfirm(arg_0, arg_1, arg_2, arg_3);
+        console.log("WebChromeClient->onJsConfirm (retType: boolean): " + retval);
         return retval;
-    }
+      }
 
-  var WebChromeClient_name="xxx";
-  var WebChromeClient = Java.use(WebChromeClient_name);
+      WebChromeClient.onConsoleMessage.overload('com.miui.webkit_api.ConsoleMessage').implementation = function(arg_0) {
+        console.warn("Hook "+WebChromeClient_name+".onConsoleMessage() succeed ......");
+        console.log(arg_0.message())
+        var retval = this.onConsoleMessage(arg_0);
+        console.log("WebChromeClient->onConsoleMessage (retType: boolean): " + retval);
+        return retval;
+      }
+      WebChromeClient.onConsoleMessage.overload('java.lang.String', 'int', 'java.lang.String').implementation = function(arg_0) {
+        console.warn("Hook "+WebChromeClient_name+".onConsoleMessage() succeed ......");
+        console.log(arg_0.message())
+        var retval = this.onConsoleMessage(arg_0);
+        console.log("WebChromeClient->onConsoleMessage (retType: boolean): " + retval);
+        return retval;
+      }
 
-    WebChromeClient.onJsPrompt.implementation = function(arg_0, arg_1, arg_2, arg_3, arg_4) {
-      console.warn("Hook "+WebChromeClient_name+".onJsPrompt() succeed ......");
-      console.log("WebChromeClient->onJsPrompt (argType: WebView): " + arg_0);
-      console.log("WebChromeClient->onJsPrompt (argType: java.lang.String): " + arg_1);
-      console.log("WebChromeClient->onJsPrompt (argType: java.lang.String): " + arg_2);
-      console.log("WebChromeClient->onJsPrompt (argType: java.lang.String): " + arg_3);
-      console.log("WebChromeClient->onJsPrompt (argType: JsPromptResult): " + arg_4);
-      var retval = this.onJsPrompt(arg_0, arg_1, arg_2, arg_3, arg_4);
-      console.log("WebChromeClient->onJsPrompt (retType: boolean): " + retval);
-      return retval;
-    }
 
-    WebChromeClient.onJsConfirm.implementation = function(arg_0, arg_1, arg_2, arg_3) {
-      console.warn("Hook "+WebChromeClient_name+".onJsConfirm() succeed ......");
-      console.log("WebChromeClient->onJsConfirm (argType: android.webkit.WebView): " + arg_0);
-      console.log("WebChromeClient->onJsConfirm (argType: java.lang.String): " + arg_1);
-      console.log("WebChromeClient->onJsConfirm (argType: java.lang.String): " + arg_2);
-      console.log("WebChromeClient->onJsConfirm (argType: JsConfirmResult): " + arg_3);
-      var retval = this.onJsConfirm(arg_0, arg_1, arg_2, arg_3);
-      console.log("WebChromeClient->onJsConfirm (retType: boolean): " + retval);
-      return retval;
-    }
+  } catch(e) {
 
-    WebChromeClient.onConsoleMessage.implementation = function(arg_0) {
-      console.warn("Hook "+WebChromeClient_name+".onConsoleMessage() succeed ......");
-      console.log(arg_0.message())
-      console.log(arg_0.toString())
-      var retval = this.onConsoleMessage(arg_0);
-      console.log("WebChromeClient->onConsoleMessage (retType: boolean): " + retval);
-      return retval;
+    if (e.message.indexOf('ClassNotFoundException') != -1) {
+
+      console.warn(WebChromeClient_name + " not found!");
+    } else {
+      // throw new Error(e);
     }
+  }
   
-  
-  var CookieManager=Java.use("com.tencent.smtt.sdk.CookieManager");
-    CookieManager.getInstance.implementation=function(){
-      console.warn("Hooking com.tencent.smtt.sdk.CookieManager.getInstance() successful");
-      // getStackTrace();
+  // hook CookieManager
+  var CookieManager_name=undefined;
+  if(WebView_name=="android.webkit.WebView"){
+    CookieManager_name="android.webkit.CookieManager";
+  }else if (WebView_name=="com.tencent.smtt.sdk.WebView") {
+    CookieManager_name="com.tencent.smtt.sdk.CookieManager";
+  }else if (WebView_name=="com.uc.webview.export.WebView") {
+    CookieManager_name="com.uc.webview.export.CookieManager";
+  }else if (WebView_name=="com.miui.webkit.WebView") {
+    CookieManager_name="com.miui.webkit.CookieManager";
+  }else if (WebView_name=="com.miui.webkit_api.WebView") {
+    CookieManager_name="com.miui.webkit_api.CookieManager";
+  }
+
+  var CookieManager=Java.use(CookieManager_name);
+    CookieManager.getInstance.overload().implementation=function(){
+      console.warn("Hooking "+CookieManager_name+".getInstance() successful");
+      getStackTrace();
       return this.getInstance();
     }
 
     CookieManager.setCookie.overload('java.lang.String', 'java.lang.String').implementation=function(p1,p2){
-      console.warn("Hooking com.tencent.smtt.sdk.CookieManager.setCookie() successful");
+      console.warn("Hooking "+CookieManager_name+".setCookie() successful");
       console.log(p1+" :"+p2);
       getStackTrace();
       return this.setCookie(p1,p2);
     }
   
-
-
-  var CookieManager=Java.use("android.webkit.CookieManager");
-    CookieManager.getInstance.implementation=function(){
-      console.warn("Hooking CookieManager.getInstance() successful");
-      // getStackTrace();
-      return this.getInstance();
-    }
-    CookieManager.setCookie.overload('java.lang.String', 'java.lang.String').implementation=function(p1,p2){
-      console.warn("Hooking CookieManager.setCookie() successful");
-      console.log(p1+" :"+p2);
-      // getStackTrace();
-      return this.setCookie(p1,p2);
-    }
   
   //hook Activity methods
   var Activity=Java.use("android.app.Activity");
