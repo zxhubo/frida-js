@@ -1,9 +1,6 @@
 'use strict';
 /**
- * 此脚本在以下环境测试通过
- * android os: 7.1.2 32bit  (64位可能要改OpenMemory的签名)
- * legu: libshella-2.8.so
- * 360:libjiagu.so
+ * 此脚本参考：https://mabin004.github.io/2018/08/22/Android%E5%9F%BA%E4%BA%8EOpenMemory%E7%9A%84%E8%84%B1%E5%A3%B3/
  */
 
 
@@ -39,7 +36,11 @@ Java.perform(function(){
       
         console.log("[*] hook OpenCommond succeed ......");
         //dex起始位置
-        var begin = args[1];
+        
+        //32位的libart.so 
+        // var begin = args[1];
+        //64位的libart.so 
+        var begin = this.context.x0;
         //打印magic
         console.log("magic : " + Memory.readUtf8String(begin));
         //dex fileSize 地址
