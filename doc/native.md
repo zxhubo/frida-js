@@ -1,3 +1,4 @@
+```
 externalNativeBuild {
             cmake {
                 cppFlags ""
@@ -10,3 +11,4 @@ externalNativeBuild {
                 abiFilters "armeabi-v7a"
             }
         }
+```
