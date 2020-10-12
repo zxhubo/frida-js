@@ -1,3 +1,5 @@
+### 编译32&64位的so
+
 ```
 externalNativeBuild {
             cmake {
