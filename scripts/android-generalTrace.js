@@ -12,9 +12,17 @@ function traceMethod(className,methodName,isPrintParameter,isNoneOp){
 		method.argumentTypes.forEach(function(type){                    
 		  argsType=argsType+type.className+"','";            
 		}); 
-		if (argsType.length >1) {
+			
+// 		if (argsType.length >1) {
+// 		  argsType=argsType.substr(0, argsType.length - 2);
+// 		}
+			
+		if (argsType.length ==2) {
+		  argsType=argsType.substr(0, argsType.length - 1);
+		}else if (argsType.length >2) {
 		  argsType=argsType.substr(0, argsType.length - 2);
 		}
+			
 		argsType=argsType+")"; 
 
 
