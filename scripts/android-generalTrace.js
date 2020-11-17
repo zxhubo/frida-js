@@ -34,7 +34,7 @@ function traceMethod(className,methodName,isPrintParameter,isNoneOp){
 	            // console.log(keys);
 
 
-	            if((arguments[j]!=null) & (Object.keys(arguments[j]).indexOf("getClass")>-1)){
+	            if((arguments[j]!=null) && (Object.keys(arguments[j]).indexOf("getClass")>-1)){
 	            	// console.log(arguments[j].getClass());
 	            	switch(arguments[j].getClass().getName()){
 	            		case "android.content.Intent":
