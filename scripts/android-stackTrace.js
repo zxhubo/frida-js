@@ -20,3 +20,6 @@ if (Java.available) {
 	});
 
 }
+
+//native 层的调用栈打印
+console.log('CCCryptorCreate called from:\n' + Thread.backtrace(this.context, Backtracer.ACCURATE) .map(DebugSymbol.fromAddress).join('\n') + '\n');
