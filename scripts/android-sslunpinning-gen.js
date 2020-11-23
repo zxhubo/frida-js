@@ -1,9 +1,8 @@
 /* author:bobby *day:2020-11-22 */
 'use strict'
 
-var clazz_Log = null;
-
 function getStackTrace(){
+	var clazz_Log = Java.use("android.util.Log");
 	console.log(clazz_Log.getStackTraceString(Java.use("java.lang.Exception").$new()));
 }
 
@@ -77,10 +76,6 @@ if (Java.available) {
 
 
 Java.perform(function() {
-
-	clazz_Log = Java.use("android.util.Log");
-
-
 
 
 
