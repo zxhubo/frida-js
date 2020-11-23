@@ -1,15 +1,11 @@
 
 /* author:bobby *day:2019-06-01 ,changed by booby *day:2020-02-21*/
 'use strict'
-var clazz_Log = null;
 
 function getStackTrace(){
+  var clazz_Log = Java.use("android.util.Log");
   console.log(clazz_Log.getStackTraceString(Java.use("java.lang.Exception").$new()));
 }
-
-Java.perform(function(){
-  clazz_Log = Java.use("android.util.Log");
-  });
 
 Java.perform(function(){
   console.error("[***] Hooking im strating");
