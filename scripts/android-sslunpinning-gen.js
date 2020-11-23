@@ -1,82 +1,151 @@
-/* author:bobby *day:2019-06-14 */
-
+/* author:bobby *day:2020-11-22 */
 'use strict'
-var clazz_Thread = null;
+
 var clazz_Log = null;
-function printStackTrace(){
-	var stackTrace = clazz_Thread.currentThread().getStackTrace().slice(2,5).reverse().toString().replace(/,/g,"\r\n");
-	console.log(stackTrace);
-}
 
 function getStackTrace(){
 	console.log(clazz_Log.getStackTraceString(Java.use("java.lang.Exception").$new()));
 }
+
+
+function traceMethod(className,methodName,isPrintParameter,isNoneOp){
+  var target_class=Java.use(className);
+  var methods=target_class[methodName].overloads;
+    methods.forEach(function(method){
+      var argsType="('";
+      method.argumentTypes.forEach(function(type){                  
+        argsType=argsType+type.className+"','"; 
+
+      }); 
+      if (argsType.length ==2) {
+        argsType=argsType.substr(0, argsType.length - 1);
+      }else if (argsType.length >2) {
+        argsType=argsType.substr(0, argsType.length - 2);
+      }
+      argsType=argsType+")"; 
+
+
+
+      method.implementation=function(){
+      console.warn("[***] Hook "+className+"."+methodName+argsType+" succeed ......");
+      if(isPrintParameter & arguments.length>0){
+        for (var j = 0; j < arguments.length; j++) {
+              console.log(methodName+"->arg[" + j + "](argType:\""+method.argumentTypes[j].className+"\"): " + arguments[j]);
+
+              // Object.getOwnPropertyNames(arguments[j]).forEach(function(key){
+
+              //     console.log(key+": "+arguments[j][key]);
+
+              // });
+
+              // var keys=Object.keys(arguments[j]);
+              // console.log(keys);
+
+
+              if((arguments[j]!=null) && (Object.keys(arguments[j]).indexOf("getClass")>-1)){
+                // console.log(arguments[j].getClass());
+                switch(arguments[j].getClass().getName()){
+                  case "android.content.Intent":
+                    console.log(decodeURIComponent(arguments[j].toUri(Java.use("android.content.Intent").URI_ALLOW_UNSAFE.value)));
+                    break;
+
+                  default:
+                    break;
+                }
+              }
+
+          }
+      }
+      getStackTrace();
+      // 判断是否需要什么都不操作直接返回
+      if(isNoneOp){
+        return;
+      }
+
+      var ret= method.apply(this,arguments);
+      if(ret!=null||ret!=undefined){
+        console.log(methodName+" ret="+ret);
+        return ret;
+      }
+    }
+  });
+}
+
+
+
 if (Java.available) {
 
 
 Java.perform(function() {
 
-
-	
-
-
-	clazz_Thread = Java.use("java.lang.Thread");
 	clazz_Log = Java.use("android.util.Log");
-	
-	var CertificatePinner = Java.use('okhttp3.CertificatePinner');
-
-	       // console.log("[+] OkHTTP 3.x Found");
-	    CertificatePinner.check.overload('java.lang.String', 'java.util.List').implementation = function() {
-			console.log("[*]Hook okhttp3.CertificatePinner.check('java.lang.String', 'java.util.List')successful");
-			// getStackTrace();
-			return;
-	    };
-
-	    CertificatePinner.check.overload('java.lang.String', '[Ljava.security.cert.Certificate;').implementation = function(p0, p1){
-			// do nothing
-		console.log("Hook okhttp3.CertificatePinner.check('java.lang.String', '[Ljava.security.cert.Certificate;')successful");
-		return;
-	    };
 
 
-	    CertificatePinner.check$okhttp.overload('java.lang.String', 'k.c0.c.a').implementation = function(arg11, arg12) {
-		console.warn("[+] Hooking okhttp3.CertificatePinner.check$okhttp('java.lang.String', 'k.c0.c.a') succeed！！！");
-		getStackTrace();
-		console.log(arg11);
-		console.log(arg12.class);
-		console.log("pin check");
-		return;
-	    }
-
-	try {
-
-			var class_name = "org.conscrypt.Platform";
-
-			var Platform  = Java.use(class_name);
 
 
-			Platform.checkServerTrusted.overload('javax.net.ssl.X509TrustManager', '[Ljava.security.cert.X509Certificate;', 'java.lang.String', 'org.conscrypt.ConscryptEngine').implementation = function(arg1,arg2,arg3,arg4){
 
+	/*
+	* hook class okhttp3.CertificatePinner 
+	* hook method check
+	*/
+    try {
 
-				console.log("[*]hook org.conscrypt.Platform.checkServerTrusted('javax.net.ssl.X509TrustManager', '[Ljava.security.cert.X509Certificate;', 'java.lang.String', 'org.conscrypt.ConscryptEngine') successful");
-				return;
-			}
-
-
-			Platform.checkServerTrusted.overload('javax.net.ssl.X509TrustManager', '[Ljava.security.cert.X509Certificate;', 'java.lang.String', 'org.conscrypt.AbstractConscryptSocket').implementation = function(arg1,arg2,arg3,arg4){
-
-				console.log("[*]hook hook org.conscrypt.Platform.checkServerTrusted('javax.net.ssl.X509TrustManager', '[Ljava.security.cert.X509Certificate;', 'java.lang.String', 'org.conscrypt.AbstractConscryptSocket') successful");
-
-				return;
-			}
-
+			var class_name = "okhttp3.CertificatePinner";	
+			traceMethod(class_name,"check",false,true);
+			// traceMethod(class_name,"check$okhttp",true);
 
 	} catch(e) {
 
 	   
 		 if (e.message.indexOf('ClassNotFoundException') != -1) {
 
-			 console.log(class_name + " not found!");
+			 console.warn(class_name + " not found!");
+		 } else {
+
+			throw new Error(e);
+
+		 }
+	}
+
+	/*
+	* hook class com.android.org.conscrypt.Platform 
+	* hook method checkServerTrusted
+	*/
+
+	try {
+
+			var class_name = "com.android.org.conscrypt.Platform";	
+			traceMethod(class_name,"checkServerTrusted",false,true);
+
+	} catch(e) {
+
+	   
+		 if (e.message.indexOf('ClassNotFoundException') != -1) {
+
+			 console.warn(class_name + " not found!");
+		 } else {
+
+			throw new Error(e);
+
+		 }
+	}
+
+
+	/*
+	* hook class org.conscrypt.Platform 
+	* hook method checkServerTrusted
+	*/
+	try {
+
+			var class_name = "org.conscrypt.Platform";	
+			traceMethod(class_name,"checkServerTrusted",false,true);
+
+	} catch(e) {
+
+	   
+		 if (e.message.indexOf('ClassNotFoundException') != -1) {
+
+			 console.warn(class_name + " not found!");
 		 } else {
 
 			throw new Error(e);
@@ -88,76 +157,24 @@ Java.perform(function() {
 
 
 
+	/*
+	* hook class android.webkit.WebViewClient，但是在实际情况中，都是继承WebViewClient然后重写账这几个函数，因此需要填入实际的类名
+	* hook method onReceivedSslError、stopLoading、onReceivedError
+	*/
 	try {
+			var class_name = "android.webkit.WebViewClient";
+			// var class_name = "com.tencent.smtt.sdk.WebViewClient";
 
-			var class_name1 = "com.android.org.conscrypt.Platform";
-			var Platform1  = Java.use(class_name1);		
-			// 兼容某些厂家的ROM
-			try{
-				Java.use("com.android.org.conscrypt.OpenSSLEngineImpl");
-				Java.use("com.android.org.conscrypt.OpenSSLSocketImpl");
-				Platform1.checkServerTrusted.overload('javax.net.ssl.X509TrustManager', '[Ljava.security.cert.X509Certificate;', 'java.lang.String', 'com.android.org.conscrypt.OpenSSLEngineImpl').implementation = function(arg1,arg2,arg3,arg4){
-					console.log("[*]hook com.android.org.conscrypt.Platform.checkServerTrusted('javax.net.ssl.X509TrustManager', '[Ljava.security.cert.X509Certificate;', 'java.lang.String', 'com.android.org.conscrypt.OpenSSLEngineImpl') successful");
-					console.log(getCaller());
-					return;
-				}
-
-
-				Platform1.checkServerTrusted.overload('javax.net.ssl.X509TrustManager', '[Ljava.security.cert.X509Certificate;', 'java.lang.String', 'com.android.org.conscrypt.OpenSSLSocketImpl').implementation = function(arg1,arg2,arg3,arg4){			 
-					console.log("[*]hook  com.android.org.conscrypt.Platform.checkServerTrusted('javax.net.ssl.X509TrustManager', '[Ljava.security.cert.X509Certificate;', 'java.lang.String', 'com.android.org.conscrypt.OpenSSLSocketImpl') successful");
-					return;
-				}
-			}catch(e){
-				if(e.message.indexOf('ClassNotFoundException') != -1){
-					console.log("[**Warn**]com.android.org.conscrypt.OpenSSLEngineImpl or com.android.org.conscrypt.OpenSSLSocketImpl not found!");
-				}else{
-					throw new Error(e);
-					
-				}
-			}
-			// 兼容某些厂家的ROM
-			try{
-				Java.use("com.android.org.conscrypt.ConscryptEngine");
-				Java.use("com.android.org.conscrypt.AbstractConscryptSocket");
-				Platform1.checkServerTrusted.overload(
-					'javax.net.ssl.X509TrustManager', 
-					'[Ljava.security.cert.X509Certificate;', 
-					'java.lang.String', 
-					'com.android.org.conscrypt.ConscryptEngine'
-					).implementation = function(arg1,arg2,arg3,arg4){
-					console.log("[*]hook com.android.org.conscrypt.Platform.checkServerTrusted('javax.net.ssl.X509TrustManager', '[Ljava.security.cert.X509Certificate;', 'java.lang.String', 'com.android.org.conscrypt.ConscryptEngine') successful");
-					return;
-				}
-
-
-				Platform1.checkServerTrusted.overload(
-					'javax.net.ssl.X509TrustManager', 
-					'[Ljava.security.cert.X509Certificate;', 
-					'java.lang.String', 
-					'com.android.org.conscrypt.AbstractConscryptSocket'
-					).implementation = function(arg1,arg2,arg3,arg4){	 
-					console.log("[*]hook com.android.org.conscrypt.Platform.checkServerTrusted('javax.net.ssl.X509TrustManager', '[Ljava.security.cert.X509Certificate;', 'java.lang.String', 'com.android.org.conscrypt.AbstractConscryptSocket') successful");
-
-					return;
-				}
-				
-			}catch(e){
-				if(e.message.indexOf('ClassNotFoundException') != -1){
-					console.log("[**Warn**]com.android.org.conscrypt.ConscryptEngine or com.android.org.conscrypt.AbstractConscryptSocket not found!");
-				}else{
-					throw new Error(e);
-					
-				}
-			}
-			
-
+			traceMethod(class_name,"onReceivedSslError",false,true);
+			// traceMethod(class_name,"stopLoading",false,true);
+			traceMethod(class_name,"onReceivedError",false,true);
 
 	} catch(e) {
 
 	   
 		 if (e.message.indexOf('ClassNotFoundException') != -1) {
 
-			 console.log(class_name1 + " not found!");
+			 console.warn(class_name + " not found!");
 		 } else {
 
 			throw new Error(e);
@@ -166,75 +183,15 @@ Java.perform(function() {
 
 
 	}
-
-
-	try {
-
-			var class_name2 = "android.webkit.WebViewClient";
-
-			var Platform2  = Java.use(class_name2);
-
-
-			Platform2.onReceivedSslError.implementation = function(arg1,arg2,arg3){
-				console.log("[*]hook android.webkit.WebViewClient.onReceivedSslError() successful");
-				getStackTrace();
-				arg2.proceed();
-				 return;
-
-				
-			}
-
-			Platform2.onReceivedError.overload('android.webkit.WebView', 'int', 'java.lang.String', 'java.lang.String').implementation = function (a,b,c,d){
-				 console.log("[*]hook successful");
-				 send("WebViewClient android.webkit.WebViewClient.onReceivedError('android.webkit.WebView', 'int', 'java.lang.String', 'java.lang.String') invoked");
-				 return ;
-			};
-
-			Platform2.onReceivedError.overload('android.webkit.WebView', 'android.webkit.WebResourceRequest', 'android.webkit.WebResourceError').implementation = function (){
-				 console.log("[*]hook android.webkit.WebViewClient.onReceivedError('android.webkit.WebView', 'android.webkit.WebResourceRequest', 'android.webkit.WebResourceError') successful");
-				 send("WebViewClient onReceivedError invoked");
-				 return ;
-			};
-		
-			Platform2.stopLoading.implementation = function(){
-
-
-
-			console.log("webview calling stopLoading");
-
-
-			}
-
-
-
-	} catch(e) {
-
-	   
-		 if (e.message.indexOf('ClassNotFoundException') != -1) {
-
-			 console.log(class_name2 + " not found!");
-		 } else {
-
-			throw new Error(e);
-
-		 }
-
-
-	}
-	
-	
 
 	try{
-		var clz = Java.use("javax.net.ssl.X509TrustManager");
-		clz.checkServerTrusted.overload('[Ljava.security.cert.X509Certificate;','java.lang.String').implementation = function(a,b){
-			console.log("[*]hook javax.net.ssl.X509TrustManager.checkServerTrusted('[Ljava.security.cert.X509Certificate;','java.lang.String') successful");
-			return;
-			
-		}
+
+			var class_name = "javax.net.ssl.X509TrustManager";	
+			traceMethod(class_name,"checkServerTrusted",false,true);
 	}catch(e){
 		if (e.message.indexOf('ClassNotFoundException') != -1) {
 
-			console.log(clz + " not found!");
+			console.log(class_name + " not found!");
 		 } else {
 
 			throw new Error(e);
@@ -242,38 +199,6 @@ Java.perform(function() {
 		 }
 		
 	}
-	
-	try{
-		//resolve okhttp3 ssl CertificatePinner and bypass this.
-		var CertificatePinner = Java.use("okhttp3.CertificatePinner");
-		CertificatePinner.check$okhttp.overload('java.lang.String', 'k.c0.c.a').implementation = function(arg11, arg12) {
-        		console.warn("[+] Hooking okhttp3.CertificatePinner.check$okhttp('java.lang.String', 'k.c0.c.a') succeed！！！");
-			return;
-		}
-		CertificatePinner.check.overload('java.lang.String', 'java.util.List').implementation = function() {
-			console.log("[*] Hooking okhttp3.CertificatePinner.check('java.lang.String', 'java.util.List')successful");
-			return;
-        	}
-
-        	CertificatePinner.check.overload('java.lang.String', '[Ljava.security.cert.Certificate;').implementation = function(p0, p1){
-                	console.log("[*] Hooking okhttp3.CertificatePinner.check('java.lang.String', '[Ljava.security.cert.Certificate;')successful");
-                	return;
-        	}
-		
-		
-		
-	}catch(e){
-		if (e.message.indexOf('ClassNotFoundException') != -1) {
-
-			console.log(CertificatePinner + " not found!");
-		 } else {
-
-			throw new Error(e);
-
-		 }
-		
-	}
-	
 
 });
 } 
