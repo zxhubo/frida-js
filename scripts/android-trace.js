@@ -169,7 +169,7 @@ Java.perform(function(){
     WebView.loadUrl.overload('java.lang.String','java.util.Map').implementation=function(p1,p2){
       console.warn("Hooking "+WebView_name+".loadUrl(p1,p2) successful,url = "+p1+", map.size() ="+p2.size());
       getStackTrace();
-      if(p2!=null&p2.size()!=0){
+      if(p2!=null&&p2.size()!=0){
         var iterator = p2.entrySet().iterator();
         while(iterator.hasNext()){
             var entry = Java.cast(iterator.next(),Java.use('java.util.HashMap$Node'));
