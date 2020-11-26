@@ -165,7 +165,7 @@ Java.perform(function(){
     WebView.loadUrl.overload('java.lang.String','java.util.Map').implementation=function(p1,p2){
       console.warn("Hooking "+WebView_name+".loadUrl(p1,p2) successful,url = "+p1+", map.size() ="+p2.size());
       getStackTrace();
-      if(p2!=null&&p2.size()!=0){
+      if(p2!=null && p2.size()!=0){
         var iterator = p2.entrySet().iterator();
         while(iterator.hasNext()){
             var entry = Java.cast(iterator.next(),Java.use('java.util.HashMap$Node'));
@@ -294,10 +294,12 @@ Java.perform(function(){
         console.log("WebChromeClient->onConsoleMessage (retType: boolean): " + retval);
         return retval;
       }
-      WebChromeClient.onConsoleMessage.overload('java.lang.String', 'int', 'java.lang.String').implementation = function(arg_0) {
+      WebChromeClient.onConsoleMessage.overload('java.lang.String', 'int', 'java.lang.String').implementation = function(arg_0,arg_1,arg_2) {
         console.warn("Hook "+WebChromeClient_name+".onConsoleMessage() succeed ......");
-        console.log(arg_0.message())
-        var retval = this.onConsoleMessage(arg_0);
+        console.log(arg_0)
+        console.log(arg_1)
+        console.log(arg_2)
+        var retval = this.onConsoleMessage(arg_0,arg_1,arg_2);
         console.log("WebChromeClient->onConsoleMessage (retType: boolean): " + retval);
         return retval;
       }
@@ -357,63 +359,63 @@ Java.perform(function(){
     Activity.startActivity.overload('android.content.Intent').implementation=function(p1){
       console.warn("Hooking android.app.Activity.startActivity(p1) successful, p1="+p1);
       getStackTrace();
-      console.log(decodeURIComponent(p1.toUri(256)));
+      console.log(decodeURIComponent(p1.toUri(Java.use("android.content.Intent").URI_ALLOW_UNSAFE.value)));
       this.startActivity(p1);
     }
     Activity.startActivity.overload('android.content.Intent', 'android.os.Bundle').implementation=function(p1,p2){
       console.warn("Hooking android.app.Activity.startActivity(p1,p2) successful, p1="+p1);
       getStackTrace();
-      console.log(decodeURIComponent(p1.toUri(256)));
+      console.log(decodeURIComponent(p1.toUri(Java.use("android.content.Intent").URI_ALLOW_UNSAFE.value)));
       this.startActivity(p1,p2);
     }
 
     Activity.startActivityForResult.overload('android.content.Intent', 'int').implementation=function(p1,p2){
       console.warn("Hooking android.app.Activity.startActivityForResult('android.content.Intent', 'int') successful, p1="+p1);
       getStackTrace();
-      console.log(decodeURIComponent(p1.toUri(256)));
+      console.log(decodeURIComponent(p1.toUri(Java.use("android.content.Intent").URI_ALLOW_UNSAFE.value)));
       this.startActivityForResult(p1,p2);
         }
 
     Activity.startActivityForResult.overload('android.content.Intent', 'int', 'android.os.Bundle').implementation=function(p1,p2,p3){
       console.warn("Hooking android.app.Activity.startActivityForResult('android.content.Intent', 'int', 'android.os.Bundle') successful, p1="+p1);
       getStackTrace();
-      console.log(decodeURIComponent(p1.toUri(256)));
+      console.log(decodeURIComponent(p1.toUri(Java.use("android.content.Intent").URI_ALLOW_UNSAFE.value)));
       this.startActivityForResult(p1,p2,p3);
     }
 
     Activity.startActivityForResult.overload('java.lang.String', 'android.content.Intent', 'int', 'android.os.Bundle').implementation=function(p1,p2,p3,p4){
       console.warn("Hooking android.app.Activity.startActivityForResult('java.lang.String', 'android.content.Intent', 'int', 'android.os.Bundle') successful, p1="+p2);
       getStackTrace();
-      console.log(decodeURIComponent(p2.toUri(256)));
+      console.log(decodeURIComponent(p2.toUri(Java.use("android.content.Intent").URI_ALLOW_UNSAFE.value)));
       this.startActivityForResult(p1,p2,p3,p4);
     }
   
     Activity.startService.overload('android.content.Intent').implementation=function(p1){
       console.warn("Hooking android.app.Activity.startService(p1) successful, p1="+p1);
-      console.log(decodeURIComponent(p1.toUri(256)));
+      console.log(decodeURIComponent(p1.toUri(Java.use("android.content.Intent").URI_ALLOW_UNSAFE.value)));
       return this.startService(p1);
     }
 
     Activity.sendBroadcast.overload('android.content.Intent').implementation=function(p1){
       console.warn("Hooking android.app.Activity.sendBroadcast(p1) successful, p1="+p1);
-      console.log(decodeURIComponent(p1.toUri(256)));
+      console.log(decodeURIComponent(p1.toUri(Java.use("android.content.Intent").URI_ALLOW_UNSAFE.value)));
       this.sendBroadcast(p1);
     }
     Activity.sendBroadcast.overload('android.content.Intent', 'java.lang.String').implementation=function(p1,p2){
       console.warn("Hooking android.app.Activity.sendBroadcast(p1,p2) successful, p1="+p1);
-      console.log(decodeURIComponent(p1.toUri(256)));
+      console.log(decodeURIComponent(p1.toUri(Java.use("android.content.Intent").URI_ALLOW_UNSAFE.value)));
       this.sendBroadcast(p1,p2);
     }
 
     Activity.sendBroadcast.overload('android.content.Intent', 'java.lang.String', 'android.os.Bundle').implementation=function(p1,p2,p3){
       console.warn("Hooking android.app.Activity.sendBroadcast(p1,p2) successful, p1="+p1);
-      console.log(decodeURIComponent(p1.toUri(256)));
+      console.log(decodeURIComponent(p1.toUri(Java.use("android.content.Intent").URI_ALLOW_UNSAFE.value)));
       this.sendBroadcast(p1,p2,3);
     }
 
     Activity.sendBroadcast.overload('android.content.Intent', 'java.lang.String', 'int').implementation=function(p1,p2,p3){
       console.warn("Hooking android.app.Activity.sendBroadcast(p1,p2) successful, p1="+p1);
-      console.log(decodeURIComponent(p1.toUri(256)));
+      console.log(decodeURIComponent(p1.toUri(Java.use("android.content.Intent").URI_ALLOW_UNSAFE.value)));
       this.sendBroadcast(p1,p2,p3);
     }
 
@@ -421,41 +423,41 @@ Java.perform(function(){
   var Service=Java.use("android.app.Service");
     Service.startActivity.overload('android.content.Intent').implementation=function(p1){
       console.warn("Hooking android.app.Service.startActivity(p1) successful, p1="+p1);
-      console.log(decodeURIComponent(p1.toUri(256)));
+      console.log(decodeURIComponent(p1.toUri(Java.use("android.content.Intent").URI_ALLOW_UNSAFE.value)));
       this.startActivity(p1);
     }
     Service.startActivity.overload('android.content.Intent', 'android.os.Bundle').implementation=function(p1,p2){
       console.warn("Hooking android.app.Service.startActivity(p1,p2) successful, p1="+p1);
-      console.log(decodeURIComponent(p1.toUri(256)));
+      console.log(decodeURIComponent(p1.toUri(Java.use("android.content.Intent").URI_ALLOW_UNSAFE.value)));
       this.startActivity(p1,p2);
     }
 
     Service.startService.overload('android.content.Intent').implementation=function(p1){
       console.warn("Hooking android.app.Service.startService(p1) successful, p1="+p1);
-      console.log(decodeURIComponent(p1.toUri(256)));
+      console.log(decodeURIComponent(p1.toUri(Java.use("android.content.Intent").URI_ALLOW_UNSAFE.value)));
       this.startService(p1);
     }
 
     Service.sendBroadcast.overload('android.content.Intent').implementation=function(p1){
       console.warn("Hooking android.app.Service.sendBroadcast(p1) successful, p1="+p1);
-      console.log(decodeURIComponent(p1.toUri(256)));
+      console.log(decodeURIComponent(p1.toUri(Java.use("android.content.Intent").URI_ALLOW_UNSAFE.value)));
       this.sendBroadcast(p1);
     }
     Service.sendBroadcast.overload('android.content.Intent', 'java.lang.String').implementation=function(p1,p2){
       console.warn("Hooking android.app.Service.sendBroadcast(p1,p2) successful, p1="+p1);
-      console.log(decodeURIComponent(p1.toUri(256)));
+      console.log(decodeURIComponent(p1.toUri(Java.use("android.content.Intent").URI_ALLOW_UNSAFE.value)));
       this.sendBroadcast(p1,p2);
     }
 
     Service.sendBroadcast.overload('android.content.Intent', 'java.lang.String', 'android.os.Bundle').implementation=function(p1,p2,p3){
       console.warn("Hooking android.app.Service.sendBroadcast(p1,p2) successful, p1="+p1);
-      console.log(decodeURIComponent(p1.toUri(256)));
+      console.log(decodeURIComponent(p1.toUri(Java.use("android.content.Intent").URI_ALLOW_UNSAFE.value)));
       this.sendBroadcast(p1,p2,3);
     }
 
     Service.sendBroadcast.overload('android.content.Intent', 'java.lang.String', 'int').implementation=function(p1,p2,p3){
       console.warn("Hooking android.app.Service.sendBroadcast(p1,p2) successful, p1="+p1);
-      console.log(decodeURIComponent(p1.toUri(256)));
+      console.log(decodeURIComponent(p1.toUri(Java.use("android.content.Intent").URI_ALLOW_UNSAFE.value)));
       this.sendBroadcast(p1,p2,p3);
     }
 
@@ -463,42 +465,42 @@ Java.perform(function(){
   var ContextWrapper=Java.use("android.content.ContextWrapper");
     ContextWrapper.startActivity.overload('android.content.Intent').implementation=function(p1){
       console.warn("Hooking android.content.ContextWrapper.startActivity(p1) successful, p1="+p1);
-      console.log(decodeURIComponent(p1.toUri(256)));
+      console.log(decodeURIComponent(p1.toUri(Java.use("android.content.Intent").URI_ALLOW_UNSAFE.value)));
       this.startActivity(p1);
     }
     ContextWrapper.startActivity.overload('android.content.Intent', 'android.os.Bundle').implementation=function(p1,p2){
       console.warn("Hooking android.content.ContextWrapper.startActivity(p1,p2) successful, p1="+p1);
       getStackTrace();
-      console.log(decodeURIComponent(p1.toUri(256)));
+      console.log(decodeURIComponent(p1.toUri(Java.use("android.content.Intent").URI_ALLOW_UNSAFE.value)));
       this.startActivity(p1,p2);
     }
 
     ContextWrapper.startService.overload('android.content.Intent').implementation=function(p1){
       console.warn("Hooking android.content.ContextWrapper.startService(p1) successful, p1="+p1);
-      console.log(decodeURIComponent(p1.toUri(256)));
+      console.log(decodeURIComponent(p1.toUri(Java.use("android.content.Intent").URI_ALLOW_UNSAFE.value)));
       return this.startService(p1);
     }
 
     ContextWrapper.sendBroadcast.overload('android.content.Intent').implementation=function(p1){
       console.warn("Hooking android.app.Activity.sendBroadcast(p1) successful, p1="+p1);
-      console.log(decodeURIComponent(p1.toUri(256)));
+      console.log(decodeURIComponent(p1.toUri(Java.use("android.content.Intent").URI_ALLOW_UNSAFE.value)));
       this.sendBroadcast(p1);
     }
     ContextWrapper.sendBroadcast.overload('android.content.Intent', 'java.lang.String').implementation=function(p1,p2){
       console.warn("Hooking android.content.ContextWrapper.sendBroadcast(p1,p2) successful, p1="+p1);
-      console.log(decodeURIComponent(p1.toUri(256)));
+      console.log(decodeURIComponent(p1.toUri(Java.use("android.content.Intent").URI_ALLOW_UNSAFE.value)));
       this.sendBroadcast(p1,p2);
     }
 
     ContextWrapper.sendBroadcast.overload('android.content.Intent', 'java.lang.String', 'android.os.Bundle').implementation=function(p1,p2,p3){
       console.warn("Hooking android.content.ContextWrapper.sendBroadcast(p1,p2) successful, p1="+p1);
-      console.log(decodeURIComponent(p1.toUri(256)));
+      console.log(decodeURIComponent(p1.toUri(Java.use("android.content.Intent").URI_ALLOW_UNSAFE.value)));
       this.sendBroadcast(p1,p2,3);
     }
 
     ContextWrapper.sendBroadcast.overload('android.content.Intent', 'java.lang.String', 'int').implementation=function(p1,p2,p3){
       console.warn("Hooking android.content.ContextWrapper.sendBroadcast(p1,p2) successful, p1="+p1);
-      console.log(decodeURIComponent(p1.toUri(256)));
+      console.log(decodeURIComponent(p1.toUri(Java.use("android.content.Intent").URI_ALLOW_UNSAFE.value)));
       this.sendBroadcast(p1,p2,p3);
     }
 
