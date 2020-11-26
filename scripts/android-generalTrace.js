@@ -73,50 +73,46 @@ function traceMethod(className,methodName,isPrintParameter,isNoneOp){
 
 
 
-// function traceMethod(className,methodName){
+function printMap(map){
+  var iterator = map.entrySet().iterator();
+  while(iterator.hasNext()){
+      var entry = Java.cast(iterator.next(),Java.use('java.util.HashMap$Node'));
+      console.log(entry.getKey()+": "+entry.getValue());   
+  }
+}
 
-//   var target_class=Java.use(className);
-//   var methods=target_class[methodName].overloads;
-//   methods.forEach(function(method){
-//     var argsType="('";
-//     method.argumentTypes.forEach(function(type){                    
-//       argsType=argsType+type.className+"','";            
-//     }); 
-//     if (argsType.length >1) {
-//       argsType=argsType.substr(0, argsType.length - 2);
-//     }
-//     argsType=argsType+")"; 
+function printSet(set){
+
+  var iterator=retval.iterator();
+  while (iterator.hasNext()) {
+    console.log(iterator.next());
+  }
+
+}
 
 
-//     method.implementation=function(){
-//       console.warn("Hook "+className+"."+methodName+argsType+" succeed ......");
-//       if(arguments.length>0){
-//         for (var j = 0; j < arguments.length; j++) {
-//               console.log(methodName+"->arg[" + j + "](argType:\""+method.argumentTypes[j].className+"\"): " + arguments[j]);
-//               // Object.getOwnPropertyNames(arguments[j]).forEach(function(key){
+function printList(list){
+  for(var i=0;i<list.size();i++){
+    console.log(list.get(i));
+  }
+}
 
-//               //     console.log(key,arguments[j][key]);
 
-//               // });
-//               if(arguments[j]!=null){
-//                 switch(arguments[j].getClass().getName()){
-//                   case "android.content.Intent":
-//                     console.log(decodeURIComponent(arguments[j].toUri(Java.use("android.content.Intent").URI_ALLOW_UNSAFE.value)));
-//                     break;
+function printDeclaredMethods(className){
 
-//                   default:
-//                     break;
-//                 }
-//               }
+  try {
+    var clz  = Java.use(className);
+    clz.class.getDeclaredMethods().forEach(function(method){
+      console.log(method);
+    });
+  } catch(e) {
 
-//           }
-//       }
-//       getStackTrace();
-//       var ret= method.apply(this,arguments);
-//       if(ret!=null||ret!=undefined){
-//         console.log(methodName+" ret="+ret);
-//         return ret;
-//       }
-//     }
-//   });
-// }
+    if (e.message.indexOf('ClassNotFoundException') != -1) {
+
+      console.warn(className + " not found!");
+    } else {
+      throw new Error(e);
+    }
+  }
+
+}
