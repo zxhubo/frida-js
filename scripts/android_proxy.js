@@ -4,7 +4,7 @@ Java.perform(function() {
 });
 
 
-
+//set a proxy forcibly for okhttp3.OkHttpClient
 var type = Java.use("java.net.Proxy$Type").valueOf("HTTP");
 var socket = Java.use("java.net.InetSocketAddress").$new("192.168.0.12",8088);
 var proxy = Java.use("java.net.Proxy").$new(type,socket);
