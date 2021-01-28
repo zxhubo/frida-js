@@ -78,7 +78,7 @@ if (Java.available) {
 Java.perform(function() {
 
 
-
+	
 	/*
 	* hook class okhttp3.CertificatePinner 
 	* hook method check
@@ -149,7 +149,7 @@ Java.perform(function() {
 
 
 	}
-
+	traceMethod("android.security.net.config.NetworkSecurityTrustManager","checkServerTrusted",false,true);
 
 
 	/*
