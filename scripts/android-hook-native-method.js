@@ -58,7 +58,7 @@ var pthread_create_addr = null;
       }
   })
 
-function byteArray2jbyteArray(){
+function Array2jbyteArray(){
     var st = Memory.alloc(6);
     Memory.writeByteArray(st, [0x58,0xCB,0x52,0x41,0x0E,0xC6]);
     var env=Java.vm.getEnv();
@@ -66,4 +66,14 @@ function byteArray2jbyteArray(){
     console.log("jarray = "+jarray);
     var ibyteArray = env.setByteArrayRegion(jarray, 0, 6, st);
     return ibyteArray;
+}
+
+function jbyteArray2Array(jbyteArray) {
+ var ret;
+ Java.perform(function() {
+     var b = Java.use('[B');
+     var buffer = Java.cast(jbyteArray, b);
+     ret = Java.array('byte', buffer);
+ });
+ return ret;
 }
