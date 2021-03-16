@@ -57,3 +57,13 @@ var pthread_create_addr = null;
           console.log("retval is:",retval)
       }
   })
+
+function byteArray2jbyteArray(){
+    var st = Memory.alloc(6);
+    Memory.writeByteArray(st, [0x58,0xCB,0x52,0x41,0x0E,0xC6]);
+    var env=Java.vm.getEnv();
+    var jarray = env.newByteArray(6);
+    console.log("jarray = "+jarray);
+    var ibyteArray = env.setByteArrayRegion(jarray, 0, 6, st);
+    return ibyteArray;
+}
