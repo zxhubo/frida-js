@@ -116,3 +116,5 @@ function printDeclaredMethods(className){
   }
 
 }
+
+Java.perform(function(){});
