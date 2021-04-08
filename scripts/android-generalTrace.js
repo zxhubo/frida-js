@@ -117,4 +117,10 @@ function printDeclaredMethods(className){
 
 }
 
-Java.perform(function(){});
+Java.perform(function(){
+	console.error("[***] Hooking im strating");
+	traceMethod("android.app.PendingIntent","getService",true,false);
+	traceMethod("android.app.PendingIntent","getBroadcast",true,false);
+	traceMethod("android.app.PendingIntent","getActivity",true,false);
+	traceMethod("android.app.NotificationManager","notify",true,false);
+});
