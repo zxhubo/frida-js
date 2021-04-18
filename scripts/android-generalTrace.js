@@ -122,5 +122,6 @@ Java.perform(function(){
 	traceMethod("android.app.PendingIntent","getService",true,false);
 	traceMethod("android.app.PendingIntent","getBroadcast",true,false);
 	traceMethod("android.app.PendingIntent","getActivity",true,false);
+	traceMethod("android.app.PendingIntent","send",true,false);
 	traceMethod("android.app.NotificationManager","notify",true,false);
 });
