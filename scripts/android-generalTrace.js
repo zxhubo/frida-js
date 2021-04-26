@@ -65,8 +65,8 @@ function traceMethod(className,methodName,isPrintParameter,isNoneOp){
 	    var ret= method.apply(this,arguments);
 	    if(ret!=null||ret!=undefined){
 	      console.log(methodName+" ret="+ret);
-	      return ret;
 	    }
+	    return ret;		
 	  }
 	});
 }
