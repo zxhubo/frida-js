@@ -4,6 +4,13 @@
 
 'use strict';
 
+
+function printStackTrace(){
+  var clazz_Log = Java.use("android.util.Log");
+  console.log(clazz_Log.getStackTraceString(Java.use("java.lang.Exception").$new()));
+}
+
+
 function traceMethod(className,methodName,isPrintParameter,isNoneOp){
 	var target_class=Java.use(className);
 	var methods=target_class[methodName].overloads;
@@ -26,7 +33,7 @@ function traceMethod(className,methodName,isPrintParameter,isNoneOp){
 		argsType=argsType+")"; 
 
 
-	  	method.implementation=function(){
+	  method.implementation=function(){
 	    console.warn("[***] Hook "+className+"."+methodName+argsType+" succeed ......");
 	    if(isPrintParameter & arguments.length>0){
 	      for (var j = 0; j < arguments.length; j++) {
@@ -40,23 +47,15 @@ function traceMethod(className,methodName,isPrintParameter,isNoneOp){
 
 	            // var keys=Object.keys(arguments[j]);
 	            // console.log(keys);
-
-
-	            if((arguments[j]!=null) && (Object.keys(arguments[j]).indexOf("getClass")>-1)){
-	            	// console.log(arguments[j].getClass());
-	            	switch(arguments[j].getClass().getName()){
-	            		case "android.content.Intent":
-	            		  console.log(decodeURIComponent(arguments[j].toUri(Java.use("android.content.Intent").URI_ALLOW_UNSAFE.value)));
-	            		  break;
-
-	            		default:
-	            		  break;
-	            	}
-	            }
+			
+		    if(method.argumentTypes[j].className=="android.content.Intent"){
+			console.log(decodeURIComponent(arguments[j].toUri(Java.use("android.content.Intent").URI_ALLOW_UNSAFE.value)));
+		    }
 
 	        }
 	    }
-	    getStackTrace();
+	    //getStackTrace();
+	    printStackTrace();
 	    // 判断是否需要什么都不操作直接返回
 	    if(isNoneOp){
 	    	return;
