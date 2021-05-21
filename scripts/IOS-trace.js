@@ -116,6 +116,32 @@ if (ObjC.available)
         }
     });
 
+    /*
+    *原生的js调用OC方法，必然会调用'- userContentController:didReceiveScriptMessage:'方法，只是这个类名确认，需要hook 了'- addScriptMessageHandler:name:',第一个参数就是类名。
+    *然后把类名填写到如下的className
+    */
+    var decisionHandler = ObjC.classes.{className}["- userContentController:didReceiveScriptMessage:"];
+    Interceptor.attach(decisionHandler.implementation, {
+        onEnter: function(args) {
+
+            var receiver = new ObjC.Object(args[0]);
+            console.log("Target class : " + receiver);
+            console.log("Target superclass : " + receiver.$superClass);
+            var sel = ObjC.selectorAsString(args[1]);
+            console.warn("Hooked the target method : " + sel);
+            var obj = ObjC.Object(args[2]);
+            console.log("Argument1 : " + obj.toString());
+            var obj = ObjC.Object(args[3]);
+            console.log("Argument2 : " + obj.toString());
+
+            console.log("name = "+ObjC.Object(args[3]).name());
+            console.log("body = "+ObjC.Object(args[3]).body());
+
+            printStackTrace(this.context);
+
+        }
+    });
+
 
     /*
 	* hook setValue函数查看添加的Http Header
