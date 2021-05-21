@@ -55,6 +55,28 @@ if (ObjC.available)
 
         }
     });
+	
+    /*OC调用js*/
+    var evaluateJavaScript = ObjC.classes.WKWebView["- evaluateJavaScript:completionHandler:"];
+    Interceptor.attach(evaluateJavaScript.implementation, {
+        onEnter: function(args) {
+
+            var receiver = new ObjC.Object(args[0]);
+            console.log("Target class : " + receiver);
+            console.log("Target superclass : " + receiver.$superClass);
+            var sel = ObjC.selectorAsString(args[1]);
+            console.warn("Hooked the target method : " + sel);
+            var obj = ObjC.Object(args[2]);
+            console.log("Argument1 : " + obj.toString());
+
+            var obj = ObjC.Object(args[3]);
+            console.log("Argument2 : " + obj.toString());
+
+
+            printStackTrace(this.context);
+
+        }
+    });
 
     var addScriptMessageHandler = ObjC.classes.WKUserContentController["- addScriptMessageHandler:name:"];
     Interceptor.attach(addScriptMessageHandler.implementation, {
