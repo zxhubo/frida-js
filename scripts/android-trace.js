@@ -145,6 +145,8 @@ Java.perform(function(){
   var WebView_name="android.webkit.WebView";
   // var WebView_name="com.tencent.smtt.sdk.WebView";
   // var WebView_name="com.uc.webview.export.WebView";
+  // var WebView_name="android.taobao.windvane.extra.uc.WVUCWebView";
+  // var WebView_name="android.alibaba.support.hybird.view.HybridWebView";
   // var WebView_name="com.miui.webkit.WebView";
   // var WebView_name="com.miui.webkit_api.WebView";
   
